@@ -17,6 +17,11 @@ const (
 	fileExistsError = "The system cannot find the file specified"
 )
 
+var (
+	healthOK = []byte("{\n \"status\": \"up\"\n}")
+	//healthLength = int64(len(healthOK))
+)
+
 func NewResponse(statusCode int, h http.Header, content any) (resp *http.Response, status *core.Status) {
 	resp = &http.Response{StatusCode: statusCode, ContentLength: -1, Header: h, Body: io.NopCloser(bytes.NewReader([]byte{}))}
 	if h == nil {
@@ -70,4 +75,14 @@ func NewResponseFromUri(uri any) (*http.Response, *core.Status) {
 	}
 	return resp1, core.StatusOK()
 
+}
+
+func NewHealthResponseOK() *http.Response {
+	resp, _ := NewResponse(http.StatusOK, SetHeader(nil, ContentType, ContentTypeText), healthOK)
+	return resp
+}
+
+func NewNotFoundResponse() *http.Response {
+	resp, _ := NewResponse(http.StatusNotFound, SetHeader(nil, ContentType, ContentTypeText), core.StatusNotFound().String())
+	return resp
 }

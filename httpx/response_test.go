@@ -8,6 +8,7 @@ import (
 	"io"
 	"net/http"
 	"net/url"
+	"strings"
 )
 
 const (
@@ -40,6 +41,41 @@ func ExampleNewResponse_Error() {
 	//Output:
 	//test: NewResponse() -> [status-code:504] [content:]
 	//test: NewResponse() -> [status-code:504] [content:Deadline Exceeded]
+
+}
+
+func ExampleNewResponse() {
+	resp, _ := NewResponse(http.StatusOK, nil, nil)
+	fmt.Printf("test: NewResponse() -> [status-code:%v]\n", resp.StatusCode)
+
+	resp, _ = NewResponse(core.StatusOK().HttpCode(), nil, "version 1.2.35")
+	buf, _ := iox.ReadAll(resp.Body, nil)
+	fmt.Printf("test: NewResponse() -> [status-code:%v] [content:%v]\n", resp.StatusCode, string(buf))
+
+	//Output:
+	//test: NewResponse() -> [status-code:200]
+	//test: NewResponse() -> [status-code:200] [content:version 1.2.35]
+
+}
+func ExampleNewHealthResponseOK() {
+	status := "\"status\": \"up\""
+	resp := NewHealthResponseOK()
+	buf, _ := iox.ReadAll(resp.Body, nil)
+	body := string(buf)
+	fmt.Printf("test: NewHealthResponseOK() -> [status-code:%v] [content:%v]\n", resp.StatusCode, strings.Contains(body, status))
+
+	//Output:
+	//test: NewHealthResponseOK() -> [status-code:200] [content:true]
+
+}
+
+func ExampleNewNotFoundResponseWithStatus() {
+	resp := NewNotFoundResponse()
+	buf, _ := iox.ReadAll(resp.Body, nil)
+	fmt.Printf("test: NewNotFoundResponse() -> [status-code:%v] [content:%v]\n", resp.StatusCode, string(buf))
+
+	//Output:
+	//test: NewNotFoundResponse() -> [status-code:404] [content:Not Found]
 
 }
 
