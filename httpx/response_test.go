@@ -1,9 +1,12 @@
 package httpx
 
 import (
+	"errors"
 	"fmt"
 	"github.com/advanced-go/common/core"
+	"github.com/advanced-go/common/iox"
 	"io"
+	"net/http"
 	"net/url"
 )
 
@@ -21,6 +24,23 @@ func readAll(body io.ReadCloser) ([]byte, *core.Status) {
 		return nil, core.NewStatusError(core.StatusIOError, err)
 	}
 	return buf, core.StatusOK()
+}
+
+func ExampleNewResponse_Error() {
+	status := core.NewStatus(http.StatusGatewayTimeout)
+	resp, _ := NewResponse(status.HttpCode(), nil, status.Err)
+	buf, _ := iox.ReadAll(resp.Body, nil)
+	fmt.Printf("test: NewResponse() -> [status-code:%v] [content:%v]\n", resp.StatusCode, string(buf))
+
+	status = core.NewStatusError(http.StatusGatewayTimeout, errors.New("Deadline Exceeded"))
+	resp, _ = NewResponse(status.HttpCode(), nil, status.Err)
+	buf, _ = iox.ReadAll(resp.Body, nil)
+	fmt.Printf("test: NewResponse() -> [status-code:%v] [content:%v]\n", resp.StatusCode, string(buf))
+
+	//Output:
+	//test: NewResponse() -> [status-code:504] [content:]
+	//test: NewResponse() -> [status-code:504] [content:Deadline Exceeded]
+
 }
 
 func Example_NewResponseFromUri() {

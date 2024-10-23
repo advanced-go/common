@@ -11,7 +11,7 @@ func ExampleHost() {
 	r := httptest.NewRecorder()
 	req, _ := http.NewRequest("", "http://localhost:8081/github/advanced-go/search:google?q=golang", nil)
 
-	hostExchange[core.Output](r, req, 0, func(r *http.Request) (*http.Response, *core.Status) {
+	hostExchange(r, req, 0, func(r *http.Request) (*http.Response, *core.Status) {
 		return &http.Response{StatusCode: http.StatusOK}, core.StatusOK()
 	})
 

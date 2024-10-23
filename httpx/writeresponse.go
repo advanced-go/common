@@ -9,8 +9,8 @@ import (
 // WriteResponse - write a http.Response, utilizing the content, status code, and headers
 // Content types supported: []byte, string, error, io.Reader, io.ReadCloser. Other types will be treated as JSON and serialized, if
 // the headers content type is JSON. If not JSON, then an error will be raised.
-func WriteResponse[E core.ErrorHandler](w http.ResponseWriter, headers any, statusCode int, content any, reqHeader http.Header) (contentLength int64) {
-	var e E
+func WriteResponse(w http.ResponseWriter, headers any, statusCode int, content any, reqHeader http.Header) (contentLength int64) {
+	var e core.Log
 
 	if statusCode == 0 {
 		statusCode = http.StatusOK

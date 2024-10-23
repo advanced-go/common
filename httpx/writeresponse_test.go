@@ -5,7 +5,6 @@ import (
 	"compress/gzip"
 	"encoding/json"
 	"fmt"
-	"github.com/advanced-go/common/core"
 	"github.com/advanced-go/common/iox"
 	"net/http"
 	"net/http/httptest"
@@ -14,10 +13,10 @@ import (
 )
 
 const (
-	activityJsonFile = "file://[cwd]/httpxtest/resource/activity.json"
-	activityGzipFile = "file://[cwd]/httpxtest/resource/activity.gz"
+	activityJsonFile = "file://[cwd]/resource/activity.json"
+	activityGzipFile = "file://[cwd]/resource/activity.gz"
 
-	testResponseText = "file://[cwd]/httpxtest/resource/test-response.txt"
+	testResponseText = "file://[cwd]/resource/test-response.txt"
 	jsonContentType  = "application/json"
 )
 
@@ -81,17 +80,17 @@ func init() {
 func ExampleWriteResponse_StatusHeaders() {
 	// all nil
 	rec := httptest.NewRecorder()
-	WriteResponse[core.Output](rec, nil, 0, nil, nil)
+	WriteResponse(rec, nil, 0, nil, nil)
 	fmt.Printf("test: WriteResponse(w,nil,0,nil) -> [status-code:%v] [header:%v]\n", rec.Result().StatusCode, rec.Result().Header)
 
 	// status code
 	rec = httptest.NewRecorder()
-	WriteResponse[core.Output](rec, nil, http.StatusTeapot, nil, nil)
+	WriteResponse(rec, nil, http.StatusTeapot, nil, nil)
 	fmt.Printf("test: WriteResponse(w,nil,StatusTeapot,nil) -> [status-code:%v] [header:%v]\n", rec.Result().StatusCode, rec.Result().Header)
 
 	// status code, headers list
 	rec = httptest.NewRecorder()
-	WriteResponse[core.Output](rec, []Attr{{Key: ContentType, Value: ContentTypeTextHtml}}, http.StatusOK, nil, CreateAcceptEncodingHeader())
+	WriteResponse(rec, []Attr{{Key: ContentType, Value: ContentTypeTextHtml}}, http.StatusOK, nil, CreateAcceptEncodingHeader())
 	fmt.Printf("test: WriteResponse(w,list,StatusOK,nil) -> [status-code:%v] [header:%v]\n", rec.Result().StatusCode, rec.Result().Header)
 
 	// status code, http.Header
@@ -99,7 +98,7 @@ func ExampleWriteResponse_StatusHeaders() {
 	h := make(http.Header)
 	h.Add(ContentType, ContentTypeJson)
 	h.Add(ContentEncoding, ContentEncodingGzip)
-	WriteResponse[core.Output](rec, h, http.StatusGatewayTimeout, nil, nil)
+	WriteResponse(rec, h, http.StatusGatewayTimeout, nil, nil)
 	fmt.Printf("test: WriteResponse(w,http.Header,StatusGatewayTimeout,nil) -> [status-code:%v] [header:%v]\n", rec.Result().StatusCode, rec.Result().Header)
 
 	//Output:
@@ -116,14 +115,14 @@ func ExampleWriteResponse_JSON() {
 
 	// JSON activity list
 	rec := httptest.NewRecorder()
-	WriteResponse[core.Output](rec, h, 0, activityList, nil)
+	WriteResponse(rec, h, 0, activityList, nil)
 	buf, status0 := iox.ReadAll(rec.Result().Body, nil)
 	fmt.Printf("test: WriteResponse(w,http.Header,OK,[]activity) -> [read-all:%v] [in:%v] [out:%v]\n", status0, len(activityJson), len(buf))
 
 	// JSON reader
 	rec = httptest.NewRecorder()
 	reader := bytes.NewReader(activityJson)
-	WriteResponse[core.Output](rec, h, 0, reader, nil)
+	WriteResponse(rec, h, 0, reader, nil)
 	buf, status0 = iox.ReadAll(rec.Result().Body, nil)
 	fmt.Printf("test: WriteResponse(w,http.Header,OK,io.Reader) -> [read-all:%v] [in:%v] [out:%v]\n", status0, len(activityJson), len(buf))
 
@@ -140,7 +139,7 @@ func ExampleWriteResponse_Encoding() {
 
 	// Should encode
 	rec := httptest.NewRecorder()
-	WriteResponse[core.Output](rec, h, 0, activityList, CreateAcceptEncodingHeader())
+	WriteResponse(rec, h, 0, activityList, CreateAcceptEncodingHeader())
 	buf, status0 := iox.ReadAll(rec.Result().Body, nil)
 	fmt.Printf("test: WriteResponse(w,http.Header,0,[]activity) -> [read-all:%v] [buf:%v][header:%v]\n", status0, http.DetectContentType(buf), rec.Result().Header)
 
@@ -150,7 +149,7 @@ func ExampleWriteResponse_Encoding() {
 	//h.Add(AcceptEncoding, AcceptEncodingValue)
 	h.Add(ContentEncoding, iox.NoneEncoding)
 	rec = httptest.NewRecorder()
-	WriteResponse[core.Output](rec, h, 0, activityList, CreateAcceptEncodingHeader())
+	WriteResponse(rec, h, 0, activityList, CreateAcceptEncodingHeader())
 	buf, status0 = iox.ReadAll(rec.Result().Body, nil)
 	fmt.Printf("test: WriteResponse(w,http.Header,0,[]activity) -> [read-all:%v] [buf:%v][header:%v]\n", status0, http.DetectContentType(buf), rec.Result().Header)
 

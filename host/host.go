@@ -14,7 +14,7 @@ const (
 	EtcRoute  = "etc"
 )
 
-func hostExchange[E core.ErrorHandler](w http.ResponseWriter, r *http.Request, dur time.Duration, handler core.HttpExchange) {
+func hostExchange(w http.ResponseWriter, r *http.Request, dur time.Duration, handler core.HttpExchange) {
 	controllerCode := ""
 	var start time.Time
 	var resp *http.Response
@@ -40,7 +40,7 @@ func hostExchange[E core.ErrorHandler](w http.ResponseWriter, r *http.Request, d
 	if status.Code == http.StatusGatewayTimeout {
 		controllerCode = access.ControllerTimeout
 	}
-	resp.ContentLength = httpx.WriteResponse[E](w, resp.Header, resp.StatusCode, resp.Body, r.Header)
+	resp.ContentLength = httpx.WriteResponse(w, resp.Header, resp.StatusCode, resp.Body, r.Header)
 	r.Header.Set(core.XTo, HostRoute)
 	access.Log(access.IngressTraffic, start, time.Since(start), r, resp, access.Routing{From: from, Route: HostRoute, To: "", Percent: -1}, access.Controller{Timeout: dur, RateLimit: 0, RateBurst: 0, Code: controllerCode})
 }

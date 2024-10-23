@@ -52,5 +52,5 @@ func HttpHandler(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusNotFound)
 		return
 	}
-	hostExchange[core.Log](w, r, hostDuration, handler)
+	hostExchange(w, r, hostDuration, handler)
 }
