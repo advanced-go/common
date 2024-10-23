@@ -118,7 +118,7 @@ func ExampleNewJsonResponse() {
 
 	resp, status = NewJsonResponse(testCore, nil)
 	//if status.OK() && resp.Body != nil {
-	//	buff, _ = io.ReadAll(resp.Body, nil)
+	//	buff, _ = iox.ReadAll(resp.Body, nil)
 	//}
 	fmt.Printf("test: NewJsonResponse(testCore,nil) -> [status:%v] [status-code:%v] [header:%v] [content-length:%v]\n", status, resp.StatusCode, resp.Header, resp.ContentLength)
 	//fmt.Printf("test: NewJsonResponse(testCore,nil) -> [status:%v] [status-code:%v] [content:%v]\n", status, resp.StatusCode, string(buff))
@@ -130,8 +130,8 @@ func ExampleNewJsonResponse() {
 
 	//Output:
 	//test: NewJsonResponse(nil,nil) -> [status:OK] [status-code:200] [content-length:0]
-	//test: NewJsonResponse(testCore,nil) -> [status:OK] [status-code:200] [header:map[Content-Type:[application/json]]] [content-length:272]
-	//test: NewJsonResponse(testCore,nil) -> [status:OK] [status-code:200] [header:map[Content-Location:[http://localhost:8081/search?q=golang] Content-Type:[application/json]]] [content-length:272]
+	//test: NewJsonResponse(testCore,nil) -> [status:OK] [status-code:200] [header:map[Content-Type:[application/jsonx]]] [content-length:272]
+	//test: NewJsonResponse(testCore,nil) -> [status:OK] [status-code:200] [header:map[Content-Location:[http://localhost:8081/search?q=golang] Content-Type:[application/jsonx]]] [content-length:272]
 
 }
 
@@ -146,7 +146,7 @@ func ExampleNewResponseWithBody() {
 	fmt.Printf("test: ResponseBody() -> [status-code:%v] [header:%v] [content-length:%v]\n", resp.StatusCode, resp.Header, resp.ContentLength)
 
 	//Output:
-	//test: ResponseBody() -> [status-code:200] [header:map[Content-Type:[application/json]]] [content-length:305]
+	//test: ResponseBody() -> [status-code:200] [header:map[Content-Type:[application/jsonx]]] [content-length:305]
 
 }
 

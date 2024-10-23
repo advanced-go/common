@@ -3,7 +3,6 @@ package core
 import (
 	"errors"
 	"fmt"
-	fmt2 "github.com/advanced-go/common/fmt"
 	"log"
 	"reflect"
 	"strconv"
@@ -101,10 +100,10 @@ func (h Log) Handle(s *Status) *Status {
 func defaultFormatter(ts time.Time, code int, status, requestId string, errs []error, trace []string) string {
 	str := strconv.Itoa(code)
 	return fmt.Sprintf("{ %v, %v, %v, %v, %v, %v }\n",
-		fmt2.JsonMarkup(TimestampName, fmt2.FmtRFC3339Millis(ts), true),
-		fmt2.JsonMarkup(CodeName, str, false),
-		fmt2.JsonMarkup(StatusName, status, true),
-		fmt2.JsonMarkup(RequestIdName, requestId, true),
+		jsonMarkup(TimestampName, FmtRFC3339Millis(ts), true),
+		jsonMarkup(CodeName, str, false),
+		jsonMarkup(StatusName, status, true),
+		jsonMarkup(RequestIdName, requestId, true),
 		formatErrors(ErrorsName, errs),
 		formatTrace(TraceName, trace))
 }

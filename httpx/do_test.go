@@ -89,7 +89,7 @@ func _ExampleDo_Proxy() {
 	fmt.Printf("test: Do() -> [write-relatesTo:%v] [response-relatesTo:%v]\n", relatesTo, resp.Header.Get(core.XRelatesTo))
 	fmt.Printf("test: Do() -> [write-statusCode:%v] [response-statusCode:%v]\n", statusCode, resp.StatusCode)
 
-	buf, _ := io.ReadAll(resp.Body)
+	buf, _ := iox.ReadAll(resp.Body)
 	fmt.Printf("test: Do() -> [write-content:%v] [response-content:%v]\n", testContent, string(buf))
 
 	//Output:
