@@ -71,6 +71,7 @@ func Do(req *http.Request) (resp *http.Response, status *core.Status) {
 		// check for an error of deadline exceeded
 		if req.Context() != nil && req.Context().Err() == context.DeadlineExceeded {
 			resp.StatusCode = http.StatusGatewayTimeout
+			err = errors.New(contextDeadlineExceeded)
 		}
 		return resp, core.NewStatusError(resp.StatusCode, err)
 	}

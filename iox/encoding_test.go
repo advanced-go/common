@@ -11,18 +11,18 @@ const (
 )
 
 const (
-	testResponseTxt  = "file://[cwd]/ioxtest/test-response.txt"
-	testResponse2Txt = "file://[cwd]/ioxtest/test-response2.txt"
+	testResponseTxt  = "file://[cwd]/resource/test-response.txt"
+	testResponse2Txt = "file://[cwd]/resource/test-response2.txt"
 
-	helloWorldTxt  = "file://[cwd]/ioxtest/hello-world.txt"
-	helloWorldGzip = "file://[cwd]/ioxtest/hello-world.gz"
+	helloWorldTxt  = "file://[cwd]/resource/hello-world.txt"
+	helloWorldGzip = "file://[cwd]/resource/hello-world.gz"
 
-	testResponseGzip = "file://[cwd]/ioxtest/test-response.gz"
+	testResponseGzip = "file://[cwd]/resource/test-response.gz"
 
-	address1Url = "file://[cwd]/ioxtest/address1.json"
-	address2Url = "file://[cwd]/ioxtest/address2.json"
-	address3Url = "file://[cwd]/ioxtest/address3.json"
-	status504   = "file://[cwd]/ioxtest/status-504.json"
+	address1Url = "file://[cwd]/resource/address1.json"
+	address2Url = "file://[cwd]/resource/address2.json"
+	address3Url = "file://[cwd]/resource/address3.json"
+	status504   = "file://[cwd]/resource/status-504.json"
 )
 
 type newAddress struct {
