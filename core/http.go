@@ -20,3 +20,10 @@ const (
 type HttpHandler func(w http.ResponseWriter, r *http.Request)
 
 type HttpExchange func(r *http.Request) (*http.Response, *Status)
+
+func ExchangeHeaders(h http.Header) (req, resp, status string) {
+	if h == nil {
+		return
+	}
+	return h.Get(XExchangeRequest), h.Get(XExchangeResponse), h.Get(XExchangeStatus)
+}
