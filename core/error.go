@@ -100,10 +100,10 @@ func (h Log) Handle(s *Status) *Status {
 func defaultFormatter(ts time.Time, code int, status, requestId string, errs []error, trace []string) string {
 	str := strconv.Itoa(code)
 	return fmt.Sprintf("{ %v, %v, %v, %v, %v, %v }\n",
-		jsonMarkup(TimestampName, FmtRFC3339Millis(ts), true),
-		jsonMarkup(CodeName, str, false),
-		jsonMarkup(StatusName, status, true),
-		jsonMarkup(RequestIdName, requestId, true),
+		JsonMarkup(TimestampName, FmtRFC3339Millis(ts), true),
+		JsonMarkup(CodeName, str, false),
+		JsonMarkup(StatusName, status, true),
+		JsonMarkup(RequestIdName, requestId, true),
 		formatErrors(ErrorsName, errs),
 		formatTrace(TraceName, trace))
 }

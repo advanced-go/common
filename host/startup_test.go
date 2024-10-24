@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"github.com/advanced-go/common/core"
 	"github.com/advanced-go/common/messaging"
-	msg2 "github.com/advanced-go/common/test/messaging"
+	msg2 "github.com/advanced-go/common/test"
 	"net/http"
 	"time"
 )

@@ -17,7 +17,7 @@ func jsonString(value string) string {
 }
 
 // jsonMarkup - markup a name/value pair
-func jsonMarkup(name, value string, stringValue bool) string {
+func JsonMarkup(name, value string, stringValue bool) string {
 	if len(value) == 0 {
 		return fmt.Sprintf(markupNull, name)
 	}
