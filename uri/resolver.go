@@ -31,6 +31,10 @@ func NewResolver(defaultHost string) *Resolver {
 	return r
 }
 
+func (r *Resolver) url() {
+
+}
+
 func (r *Resolver) Url(host, authority, path string, query any, h http.Header) string {
 	path1 := BuildPath(authority, path, query)
 	if h != nil && h.Get(XContentResolver) != "" {
