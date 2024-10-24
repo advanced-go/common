@@ -5,18 +5,6 @@ import (
 	"net/http"
 )
 
-const (
-	XRequestId = "X-Request-Id"
-	XRelatesTo = "X-Relates-To"
-	XAuthority = "X-Authority"
-	XVersion   = "X-Version"
-	XURLPath   = "x-url-path"
-	XTest      = "X-Test"
-	XFrom      = "X-From"
-	XTo        = "X-To"
-	XRoute     = "X-Route"
-)
-
 // AddRequestId - add a request to an http.Request or an http.Header
 func AddRequestId(t any) http.Header {
 	if t == nil {
