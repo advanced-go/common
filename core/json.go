@@ -8,14 +8,6 @@ const (
 	markupValue  = "\"%v\":%v"
 )
 
-// jsonString - Json format a string value
-func jsonString(value string) string {
-	if len(value) == 0 {
-		return "null"
-	}
-	return "\"" + value + "\""
-}
-
 // JsonMarkup - markup a name/value pair
 func JsonMarkup(name, value string, stringValue bool) string {
 	if len(value) == 0 {
