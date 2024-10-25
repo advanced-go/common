@@ -9,7 +9,7 @@ import (
 	"reflect"
 )
 
-//go:embed resource
+//go:embed test
 var tf embed.FS
 
 // parseRaw - parse a raw Uri without error
