@@ -18,7 +18,7 @@ type Activity struct {
 }
 
 func ExampleContent_Error() {
-	s := "file://[cwd]/resource/activity-error-response.txt"
+	s := "file://[cwd]/test/activity-error-response.txt"
 	u, _ := url.Parse(s)
 
 	resp, status0 := NewResponseFromUri(u)
@@ -33,13 +33,13 @@ func ExampleContent_Error() {
 	}
 
 	//Output:
-	//test: NewResponseFromUri(file://[cwd]/resource/activity-error-response.txt) -> [error:[<nil>]] [statusCode:200]
+	//test: NewResponseFromUri(file://[cwd]/test/activity-error-response.txt) -> [error:[<nil>]] [statusCode:200]
 	//test: Content -> [] [status:Json Decode Failure [unexpected EOF]]
 
 }
 
 func ExampleContent_Empty() {
-	s := "file://[cwd]/resource/activity-empty-response.txt"
+	s := "file://[cwd]/test/activity-empty-response.txt"
 	u, _ := url.Parse(s)
 
 	resp, status0 := NewResponseFromUri(u)
@@ -54,7 +54,7 @@ func ExampleContent_Empty() {
 	}
 
 	//Output:
-	//test: NewResponseFromUri(file://[cwd]/resource/activity-empty-response.txt) -> [error:[<nil>]] [statusCode:200]
+	//test: NewResponseFromUri(file://[cwd]/test/activity-empty-response.txt) -> [error:[<nil>]] [statusCode:200]
 	//test: Content -> [] [status:No Content]
 
 }

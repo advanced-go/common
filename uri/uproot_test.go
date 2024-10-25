@@ -12,7 +12,7 @@ func ExampleUproot_Validate() {
 	fmt.Printf("test: Uproot-Empty(%v) -> [ok:%v] [auth:%v] [vers:%v] [path:%v] [err:%v]\n", path, p.Valid, p.Authority, p.Version, p.Path, p.Err)
 
 	// Urn should not be changed
-	path = "urn:github.resource"
+	path = "urn:github.test"
 	p = Uproot(path)
 	fmt.Printf("test: Uproot-URN(%v) -> [ok:%v] [auth:%v] [vers:%v] [path:%v] [err:%v]\n", path, p.Valid, p.Authority, p.Version, p.Path, p.Err)
 
@@ -33,7 +33,7 @@ func ExampleUproot_Validate() {
 
 	//Output:
 	//test: Uproot-Empty() -> [ok:false] [auth:] [vers:] [path:] [err:error: invalid input, URI is empty]
-	//test: Uproot-URN(urn:github.resource) -> [ok:true] [auth:urn:github.resource] [vers:] [path:urn:github.resource] [err:<nil>]
+	//test: Uproot-URN(urn:github.test) -> [ok:true] [auth:urn:github.test] [vers:] [path:urn:github.test] [err:<nil>]
 	//test: Uproot-Authority-Only(http://localhost:8080/github/advanced-go/search/query?term=golang) -> [ok:true] [auth:github/advanced-go/search/query] [vers:] [path:] [err:<nil>]
 	//test: Uproot-Authority+Path(http://localhost:8080/github/advanced-go/search:query?term=golang) -> [ok:true] [auth:github/advanced-go/search] [vers:] [path:query] [err:<nil>]
 	//test: Uproot->1 URN(http://localhost:8080/github/advanced-go/:search:/query?term=golang) -> [ok:false] [auth:] [vers:] [path:] [err:error: path has multiple URN separators [/github/advanced-go/:search:/query]]

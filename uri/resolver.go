@@ -77,7 +77,7 @@ func BuildPath(authority, path string, query any) string {
 		path1.WriteString(":")
 		path1.WriteString(formatVersion2(version))
 	}
-	path1.WriteString(resource)
+	path1.WriteString(test)
 	path1.WriteString(formatQuery(query))
 	return path1.String()
 }
@@ -159,8 +159,8 @@ func (r *Resolver) Url(host, path string, query any, h http.Header) string {
 	return Cat(r.defaultHost, path1)
 }
 
-func (r *Resolver) UrlWithAuthority(host, authority, version, resource string, query any, h http.Header) string {
-	path := BuildPath(authority, version, resource, query)
+func (r *Resolver) UrlWithAuthority(host, authority, version, test string, query any, h http.Header) string {
+	path := BuildPath(authority, version, test, query)
 	if h != nil && h.Get(XResolver) != "" {
 		p2 := createUrl(h, path) //h.Get(path)
 		if p2 != "" {

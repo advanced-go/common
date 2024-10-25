@@ -8,7 +8,7 @@ import (
 )
 
 func Example_ReadContent_Empty() {
-	s := "file://[cwd]/resource/get-request.txt"
+	s := "file://[cwd]/test/get-request.txt"
 	buf, err := os.ReadFile(iox.FileName(s))
 	if err != nil {
 		fmt.Printf("test: ReadFile(%v) -> [err:%v]\n", s, err)
@@ -24,7 +24,7 @@ func Example_ReadContent_Empty() {
 }
 
 func _Example_ReadContent_Available() {
-	s := "file://[cwd]/resource/put-req.txt"
+	s := "file://[cwd]/test/put-req.txt"
 	buf, err := os.ReadFile(iox.FileName(s))
 	if err != nil {
 		fmt.Printf("test: ReadFile(%v) -> [err:%v]\n", s, err)

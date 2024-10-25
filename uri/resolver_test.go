@@ -162,8 +162,8 @@ func ExampleResolve_UrlWithAuthority() {
 func ExampleCreateUrl() {
 	path1 := "advanced-go/observation:v1/timeseries/egress/entry?region=*"
 	path2 := "advanced-go/observation:v1/timeseries/egress/entry?region=**"
-	url1 := "file:///f:/resource/info.jsonx"
-	url2 := "file:///f:/resource/test.jsonx"
+	url1 := "file:///f:/test/info.jsonx"
+	url2 := "file:///f:/test/test.jsonx"
 
 	path := ""
 	h := make(http.Header)
@@ -181,7 +181,7 @@ func ExampleCreateUrl() {
 
 	//Output:
 	//test: createUrl(empty) -> []
-	//test: createUrl("advanced-go/observation:v1/timeseries/egress/entry?region=*") -> file:///f:/resource/info.jsonx
-	//test: createUrl("advanced-go/observation:v1/timeseries/egress/entry?region=**") -> file:///f:/resource/test.jsonx
+	//test: createUrl("advanced-go/observation:v1/timeseries/egress/entry?region=*") -> file:///f:/test/info.jsonx
+	//test: createUrl("advanced-go/observation:v1/timeseries/egress/entry?region=**") -> file:///f:/test/test.jsonx
 
 }

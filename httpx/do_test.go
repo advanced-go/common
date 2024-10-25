@@ -28,7 +28,7 @@ func ExampleDo_InvalidArgument() {
 }
 
 func ExampleDo_ServiceUnavailable_Uri() {
-	req, _ := http.NewRequest(http.MethodGet, "file://[cwd]/resource/http-503.txt", nil)
+	req, _ := http.NewRequest(http.MethodGet, "file://[cwd]/test/http-503.txt", nil)
 	resp, status := Do(req)
 	fmt.Printf("test: Do(req) -> [resp:%v] [statusCode:%v] [errs:%v] [content-type:%v] [body:%v]\n",
 		resp != nil, status.Code, status.Err, resp.Header.Get("content-type"), resp.Body != nil)
@@ -54,7 +54,7 @@ func ExampleDo_ConnectivityError() {
 */
 
 func ExampleDo_Service_Unavailable() {
-	s := "file://[cwd]/resource/http-503.txt"
+	s := "file://[cwd]/test/http-503.txt"
 	req, _ := http.NewRequest("", s, nil)
 	resp, status := Do(req)
 	fmt.Printf("test: Do() -> [status-code:%v] [status:%v]\n", resp.StatusCode, status)

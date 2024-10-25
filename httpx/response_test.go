@@ -12,7 +12,7 @@ import (
 )
 
 const (
-	testResponse = "file://[cwd]/resource/test-response.txt"
+	testResponse = "file://[cwd]/test/test-response.txt"
 )
 
 func readAll(body io.ReadCloser) ([]byte, *core.Status) {
@@ -90,7 +90,7 @@ func Example_NewResponseFromUri() {
 	fmt.Printf("test: readAll() -> [status:%v] [content-length:%v]\n", status, len(buf)) //string(buf))
 
 	//Output:
-	//test: NewResponseFromUri(file://[cwd]/resource/test-response.txt) -> [status:OK] [statusCode:200]
+	//test: NewResponseFromUri(file://[cwd]/test/test-response.txt) -> [status:OK] [statusCode:200]
 	//test: readAll() -> [status:OK] [content-length:56]
 
 }
@@ -117,19 +117,19 @@ func _Example_NewResponseFromUri_Invalid_Scheme() {
 }
 
 func Example_NewResponseFromUri_HTTP_Error() {
-	s := "file://[cwd]/resource/message.txt"
+	s := "file://[cwd]/test/message.txt"
 	u, _ := url.Parse(s)
 
 	resp, status0 := NewResponseFromUri(u)
 	fmt.Printf("test: NewResponseFromUri(%v) -> [error:[%v]] [statusCode:%v]\n", s, status0.Err, resp.StatusCode)
 
 	//Output:
-	//test: NewResponseFromUri(file://[cwd]/resource/message.txt) -> [error:[malformed HTTP status code "text"]] [statusCode:500]
+	//test: NewResponseFromUri(file://[cwd]/test/message.txt) -> [error:[malformed HTTP status code "text"]] [statusCode:500]
 
 }
 
 func Example_NewResponseFromUri_504() {
-	s := "file://[cwd]/resource/http-504.txt"
+	s := "file://[cwd]/test/http-504.txt"
 	u, _ := url.Parse(s)
 
 	resp, status0 := NewResponseFromUri(u)
@@ -139,20 +139,20 @@ func Example_NewResponseFromUri_504() {
 	fmt.Printf("test: readAll() -> [status:%v] [content-length:%v]\n", status, len(buf)) //string(buf))
 
 	//Output:
-	//test: NewResponseFromUri(file://[cwd]/resource/http-504.txt) -> [error:[<nil>]] [statusCode:504]
+	//test: NewResponseFromUri(file://[cwd]/test/http-504.txt) -> [error:[<nil>]] [statusCode:504]
 	//test: readAll() -> [status:OK] [content-length:0]
 
 }
 
 func Example_NewResponseFromUri_EOF_Error() {
-	s := "file://[cwd]/resource/http-503-error.txt"
+	s := "file://[cwd]/test/http-503-error.txt"
 	u, _ := url.Parse(s)
 
 	resp, status0 := NewResponseFromUri(u)
 	fmt.Printf("test: NewResponseFromUri(%v) -> [error:[%v]] [statusCode:%v]\n", s, status0.Err, resp.StatusCode)
 
 	//Output:
-	//test: NewResponseFromUri(file://[cwd]/resource/http-503-error.txt) -> [error:[unexpected EOF]] [statusCode:500]
+	//test: NewResponseFromUri(file://[cwd]/test/http-503-error.txt) -> [error:[unexpected EOF]] [statusCode:500]
 
 }
 

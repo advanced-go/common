@@ -8,7 +8,7 @@ import (
 )
 
 const (
-	customerAddr = "file://[cwd]/resource/customer-address.txt"
+	customerAddr = "file://[cwd]/test/customer-address.txt"
 )
 
 func ExampleIndent() {

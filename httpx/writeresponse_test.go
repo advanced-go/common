@@ -13,10 +13,10 @@ import (
 )
 
 const (
-	activityJsonFile = "file://[cwd]/resource/activity.json"
-	activityGzipFile = "file://[cwd]/resource/activity.gz"
+	activityJsonFile = "file://[cwd]/test/activity.json"
+	activityGzipFile = "file://[cwd]/test/activity.gz"
 
-	testResponseText = "file://[cwd]/resource/test-response.txt"
+	testResponseText = "file://[cwd]/test/test-response.txt"
 	jsonContentType  = "application/json"
 )
 
