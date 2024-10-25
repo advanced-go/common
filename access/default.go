@@ -60,44 +60,44 @@ func DefaultFormat(o core.Origin, traffic string, start time.Time, duration time
 		"\"rc\":%v }",
 
 		// Origin, traffic, timestamp, duration
-		jsonString(o.Region),
-		jsonString(o.Zone),
-		jsonString(o.SubZone),
-		jsonString(o.InstanceId),
+		JsonString(o.Region),
+		JsonString(o.Zone),
+		JsonString(o.SubZone),
+		JsonString(o.InstanceId),
 		traffic,
 		core.FmtRFC3339Millis(start),
 		strconv.Itoa(Milliseconds(duration)),
 
 		// Request
-		jsonString(newReq.Header.Get(XRequestId)),
-		jsonString(newReq.Header.Get(XRelatesTo)),
-		jsonString(newReq.Header.Get(LocationHeader)),
-		jsonString(newReq.Proto),
-		jsonString(newReq.Method),
-		jsonString(o.Host),
-		jsonString(routing.From),
-		jsonString(CreateTo(newReq)),
-		jsonString(url),
-		jsonString(parsed.Path),
-		jsonString(parsed.Query),
+		JsonString(newReq.Header.Get(XRequestId)),
+		JsonString(newReq.Header.Get(XRelatesTo)),
+		JsonString(newReq.Header.Get(LocationHeader)),
+		JsonString(newReq.Proto),
+		JsonString(newReq.Method),
+		JsonString(o.Host),
+		JsonString(routing.From),
+		JsonString(CreateTo(newReq)),
+		JsonString(url),
+		JsonString(parsed.Path),
+		JsonString(parsed.Query),
 
 		// Response
 		newResp.StatusCode,
 		//jsonString(resp.Status),
-		jsonString(Encoding(newResp)),
+		JsonString(Encoding(newResp)),
 		fmt.Sprintf("%v", newResp.ContentLength),
 
 		// Controller
 		Milliseconds(controller.Timeout),
 		fmt.Sprintf("%v", controller.RateLimit),
 		strconv.Itoa(controller.RateBurst),
-		jsonString(controller.Code),
+		JsonString(controller.Code),
 
 		// Routing
-		jsonString(routing.Route),
-		jsonString(routing.To),
+		JsonString(routing.Route),
+		JsonString(routing.To),
 		fmt.Sprintf("%v", routing.Percent),
-		jsonString(routing.Code),
+		JsonString(routing.Code),
 	)
 
 	return s
