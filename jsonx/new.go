@@ -33,6 +33,10 @@ func decodeStatus(err error) *core.Status {
 	return core.NewStatusError(core.StatusJsonDecodeError, err)
 }
 
+//type NewConstraints interface {
+//	string | []byte | *url.URL | *http.Request | *http.Response | interface{ io.Reader } | interface{ io.ReadCloser }
+//}
+
 // New - create a new type from JSON content, supporting: string, *url.URL, []byte, io.Reader, io.ReadCloser
 func New[T any](v any, h http.Header) (t T, status *core.Status) {
 	var buf []byte
