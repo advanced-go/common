@@ -86,7 +86,7 @@ func ExampleSend() {
 	uri1 := "urn:agent-1"
 	uri2 := "urn:agent-2"
 	uri3 := "urn:agent-3"
-	c := make(chan *Message, 16)
+	c := NewChannel("test", true) //make(chan *Message, 16)
 	ex := NewExchange()
 
 	a1 := newTestAgent(uri1, c, nil)
@@ -101,11 +101,11 @@ func ExampleSend() {
 	ex.Send(NewControlMessage(uri3, PkgPath, StartupEvent))
 
 	time.Sleep(time.Second * 1)
-	resp1 := <-c
-	resp2 := <-c
-	resp3 := <-c
+	resp1 := <-c.C
+	resp2 := <-c.C
+	resp3 := <-c.C
 	fmt.Printf("test: <- c -> : [%v] [%v] [%v]\n", resp1.To(), resp2.To(), resp3.To())
-	close(c)
+	c.Close()
 
 	//Output:
 	//test: <- c -> : [urn:agent-1] [urn:agent-2] [urn:agent-3]

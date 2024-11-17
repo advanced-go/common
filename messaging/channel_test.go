@@ -45,3 +45,35 @@ func ExampleNewChannel_Send() {
 	//test: NewChannel_Send() -> [enabled:true] [msg:[chan:CTRL] [from:] [to:] [event:startup]]
 
 }
+
+func ExampleChannel_IsFinalized_True() {
+	c := NewPrimaryChannel(true)
+	go func() {
+		time.Sleep(time.Second * 6)
+		c.Close()
+	}()
+
+	fmt.Printf("test: IsFinalized() -> [finalized:%v]\n", c.IsFinalized())
+	fmt.Printf("test: Closed() -> %v\n", c.C == nil)
+
+	//Output:
+	//test: IsFinalized() -> [finalized:true]
+	//test: Closed() -> true
+
+}
+
+func _ExampleChannel_IsFinalized_False() {
+	c := NewPrimaryChannel(true)
+	go func() {
+		time.Sleep(time.Second * 15)
+		c.Close()
+	}()
+
+	fmt.Printf("test: IsFinalized() -> [finalized:%v]\n", c.IsFinalized())
+	fmt.Printf("test: Closed() -> %v\n", c.C == nil)
+
+	//Output:
+	//test: IsFinalized() -> [finalized:false]
+	//test: Closed() -> false
+
+}

@@ -30,6 +30,9 @@ func newControlAgent(uri string, ch chan *Message, handler Handler) *controlAgen
 	return c
 }
 
+// IsFinalized - finalized
+func (c *controlAgent) IsFinalized() bool { return true }
+
 // Uri - identity
 func (c *controlAgent) Uri() string { return c.agentId }
 

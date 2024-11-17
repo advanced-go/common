@@ -18,10 +18,10 @@ func ExamplePing_Good() {
 	uri1 := "urn:ping:good"
 	ex := NewExchange()
 
-	c := make(chan *Message, 16)
+	c := NewPrimaryChannel(true) //make(chan *Message, 16)
 	a := newTestAgent(uri1, c, nil)
 	ex.Register(a)
-	go pingGood(c)
+	go pingGood(c.C)
 	status := Ping(ex, uri1)
 	fmt.Printf("test: Ping(good) -> [%v] [timeout:%v] [duration<3:%v]\n", status, timeout, status.Duration < time.Second*3)
 
@@ -32,12 +32,12 @@ func ExamplePing_Good() {
 
 func ExamplePing_Timeout() {
 	uri2 := "urn:ping:timeout"
-	c := make(chan *Message, 16)
+	c := NewPrimaryChannel(true) //make(chan *Message, 16)
 
 	ex := NewExchange()
 	a := newTestAgent(uri2, c, nil)
 	ex.Register(a)
-	go pingTimeout(c)
+	go pingTimeout(c.C)
 	status := Ping(ex, uri2)
 	fmt.Printf("test: Ping(timeout) -> [%v] [timeout:%v] [duration>3:%v]\n", status, timeout, status.Duration > time.Second*3)
 
@@ -50,10 +50,10 @@ func ExamplePing_Error() {
 	uri3 := "urn:ping:error"
 	ex := NewExchange()
 
-	c := make(chan *Message, 16)
+	c := NewPrimaryChannel(true) //make(chan *Message, 16)
 	a := newTestAgent(uri3, c, nil)
 	ex.Register(a)
-	go pingError(c, errors.New("ping response error"))
+	go pingError(c.C, errors.New("ping response error"))
 	status := Ping(ex, uri3)
 	fmt.Printf("test: Ping(error) -> [status:%v] [timeout:%v] [duration<3:%v]\n", status, timeout, status.Duration < time.Second*3)
 
@@ -67,10 +67,10 @@ func ExamplePing_Delay() {
 	uri4 := "urn:ping:delay"
 	ex := NewExchange()
 
-	c := make(chan *Message, 16)
+	c := NewPrimaryChannel(true) //an *Message, 16)
 	a := newTestAgent(uri4, c, nil)
 	ex.Register(a)
-	go pingDelay(c)
+	go pingDelay(c.C)
 	status := Ping(ex, uri4)
 	fmt.Printf("test: Ping(delay) -> [%v] [timeout:%v] [duration>timeout/2:%v]\n", status, timeout, status.Duration > timeout/2)
 

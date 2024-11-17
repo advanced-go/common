@@ -8,8 +8,8 @@ import (
 type testAgent struct {
 	running    bool
 	agentId    string
-	ctrl       chan *Message
-	data       chan *Message
+	ctrl       *Channel
+	data       *Channel
 	handler    Handler
 	shutdownFn func()
 }
@@ -18,23 +18,24 @@ func NewTestAgent(uri string) Agent {
 	return newTestAgent(uri, nil, nil)
 }
 
-func newTestAgent(uri string, ctrl, data chan *Message) *testAgent {
+func newTestAgent(uri string, ctrl, data *Channel) *testAgent {
 	t := new(testAgent)
 	t.agentId = uri
 	if ctrl == nil {
-		t.ctrl = make(chan *Message, ChannelSize)
+		t.ctrl = NewChannel(ChannelData, true) //make(chan *Message, ChannelSize)
 	} else {
 		t.ctrl = ctrl
 	}
 	if data == nil {
-		t.data = make(chan *Message, ChannelSize)
+		t.data = NewChannel(ChannelControl, true) //make(chan *Message, ChannelSize)
 	} else {
 		t.data = data
 	}
 	return t
 }
-func (t *testAgent) Uri() string    { return t.agentId }
-func (t *testAgent) String() string { return t.Uri() }
+func (t *testAgent) IsFinalized() bool { return t.data.IsFinalized() && t.ctrl.IsFinalized() }
+func (t *testAgent) Uri() string       { return t.agentId }
+func (t *testAgent) String() string    { return t.Uri() }
 func (t *testAgent) Message(msg *Message) {
 	if msg == nil {
 		return
@@ -42,11 +43,11 @@ func (t *testAgent) Message(msg *Message) {
 	switch msg.Channel() {
 	case ChannelControl:
 		if t.ctrl != nil {
-			t.ctrl <- msg
+			t.ctrl.C <- msg
 		}
 	case ChannelData:
 		if t.data != nil {
-			t.data <- msg
+			t.data.C <- msg
 		}
 	default:
 	}
@@ -79,7 +80,7 @@ func (t *testAgent) Add(f func()) {
 func testAgentRun(t *testAgent) {
 	for {
 		select {
-		case msg, open := <-t.ctrl:
+		case msg, open := <-t.ctrl.C:
 			if !open {
 				return
 			}
@@ -90,7 +91,7 @@ func testAgentRun(t *testAgent) {
 		default:
 		}
 		select {
-		case msg, open := <-t.data:
+		case msg, open := <-t.data.C:
 			if !open {
 				return
 			}

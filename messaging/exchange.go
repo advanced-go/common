@@ -5,6 +5,12 @@ import (
 	"fmt"
 	"sort"
 	"sync"
+	"time"
+)
+
+const (
+	exchangeFinalizeDuration = time.Second * 30
+	exchangeFinalizeAttempts = 4
 )
 
 type Mailbox interface {
@@ -25,9 +31,9 @@ func NewExchange() *Exchange {
 }
 
 // Count - number of agents
-func (d *Exchange) Count() int {
+func (e *Exchange) Count() int {
 	count := 0
-	d.m.Range(func(key, value any) bool {
+	e.m.Range(func(key, value any) bool {
 		count++
 		return true
 	})
@@ -35,9 +41,9 @@ func (d *Exchange) Count() int {
 }
 
 // List - a list of agent uri's
-func (d *Exchange) List() []string {
+func (e *Exchange) List() []string {
 	var uri []string
-	d.m.Range(func(key, value any) bool {
+	e.m.Range(func(key, value any) bool {
 		if str, ok := key.(string); ok {
 			uri = append(uri, str)
 		}
@@ -48,7 +54,7 @@ func (d *Exchange) List() []string {
 }
 
 // Send - send a message
-func (d *Exchange) Send(msg *Message) error {
+func (e *Exchange) Send(msg *Message) error {
 	// TO DO : authenticate shutdown control message
 	//if msg != nil && msg.Event() == ShutdownEvent {
 	//	return nil
@@ -56,7 +62,7 @@ func (d *Exchange) Send(msg *Message) error {
 	if msg == nil {
 		return errors.New(fmt.Sprintf("error: controller2.Send() failed as message is nil"))
 	}
-	a := d.Get(msg.To())
+	a := e.Get(msg.To())
 	if a == nil {
 		return errors.New(fmt.Sprintf("error: controller2.Send() failed as the message To is empty or invalid : [%v]", msg.To()))
 	}
@@ -65,7 +71,7 @@ func (d *Exchange) Send(msg *Message) error {
 }
 
 // Broadcast - broadcast a message to all entries, deleting the entry if the message event is Shutdown
-func (d *Exchange) Broadcast(msg *Message) {
+func (e *Exchange) Broadcast(msg *Message) {
 	if msg == nil {
 		return //errors.New(fmt.Sprintf("error: exchange.Broadcast() failed as message is nil"))
 	}
@@ -74,8 +80,8 @@ func (d *Exchange) Broadcast(msg *Message) {
 		return
 	}
 	go func() {
-		for _, uri := range d.List() {
-			a := d.Get(uri)
+		for _, uri := range e.List() {
+			a := e.Get(uri)
 			if a == nil {
 				continue
 			}
@@ -88,29 +94,29 @@ func (d *Exchange) Broadcast(msg *Message) {
 }
 
 // RegisterMailbox - register a mailbox
-func (d *Exchange) RegisterMailbox(m Mailbox) error {
+func (e *Exchange) RegisterMailbox(m Mailbox) error {
 	if m == nil {
 		return errors.New("error: controller2.Register() agent is nil")
 	}
-	_, ok := d.m.Load(m.Uri())
+	_, ok := e.m.Load(m.Uri())
 	if ok {
 		return errors.New(fmt.Sprintf("error: controller2.Register() agent already exists: [%v]", m.Uri()))
 	}
-	d.m.Store(m.Uri(), m)
+	e.m.Store(m.Uri(), m)
 	if sd, ok1 := m.(OnShutdown); ok1 {
 		sd.Add(func() {
-			d.m.Delete(m.Uri())
+			e.m.Delete(m.Uri())
 		})
 	}
 	return nil
 }
 
 // GetMailbox - find a mailbox
-func (d *Exchange) GetMailbox(uri string) Mailbox {
+func (e *Exchange) GetMailbox(uri string) Mailbox {
 	if len(uri) == 0 {
 		return nil
 	}
-	v, ok1 := d.m.Load(uri)
+	v, ok1 := e.m.Load(uri)
 	if !ok1 {
 		return nil
 	}
@@ -121,32 +127,32 @@ func (d *Exchange) GetMailbox(uri string) Mailbox {
 }
 
 // Register - register an agent
-func (d *Exchange) Register(agent Agent) error {
+func (e *Exchange) Register(agent Agent) error {
 	if agent == nil {
 		return errors.New("error: exchange.Register() agent is nil")
 	}
 	if agent.Uri() == "" {
 		return errors.New("error: exchange.Register() agent Uri is nil")
 	}
-	_, ok := d.m.Load(agent.Uri())
+	_, ok := e.m.Load(agent.Uri())
 	if ok {
 		return errors.New(fmt.Sprintf("error: exchange.Register() agent already exists: [%v]", agent.Uri()))
 	}
-	d.m.Store(agent.Uri(), agent)
+	e.m.Store(agent.Uri(), agent)
 	if sd, ok1 := agent.(OnShutdown); ok1 {
 		sd.Add(func() {
-			d.m.Delete(agent.Uri())
+			e.m.Delete(agent.Uri())
 		})
 	}
 	return nil
 }
 
 // Get - find an agent
-func (d *Exchange) Get(uri string) Agent {
+func (e *Exchange) Get(uri string) Agent {
 	if len(uri) == 0 {
 		return nil
 	}
-	v, ok1 := d.m.Load(uri)
+	v, ok1 := e.m.Load(uri)
 	if !ok1 {
 		return nil
 	}
@@ -157,16 +163,27 @@ func (d *Exchange) Get(uri string) Agent {
 }
 
 // Shutdown - shutdown all agents
-func (d *Exchange) Shutdown() {
+func (e *Exchange) Shutdown() {
 	go func() {
-		for _, uri := range d.List() {
-			a := d.Get(uri)
+		for _, uri := range e.List() {
+			a := e.Get(uri)
 			if a == nil {
 				continue
 			}
 			a.Shutdown()
 		}
 	}()
+}
+
+// IsFinalized - determine if all agents have been shutdown and removed from the exchange
+func (e *Exchange) IsFinalized() bool {
+	for i := exchangeFinalizeAttempts; i > 0; i-- {
+		if e.Count() == 0 {
+			return true
+		}
+		time.Sleep(exchangeFinalizeDuration)
+	}
+	return false
 }
 
 /*

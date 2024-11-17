@@ -21,6 +21,7 @@ type OnShutdown interface {
 //	Track agent NID or class/type?
 type Agent interface {
 	Mailbox
+	Finalizer
 	Run()
 	Shutdown()
 }

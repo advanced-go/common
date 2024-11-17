@@ -31,7 +31,7 @@ func tickerRun(ctrl <-chan *Message, t *Ticker) {
 	t.Start(0)
 	for {
 		select {
-		case <-t.C():
+		case <-t.ticker.C:
 			fmt.Printf("test: Ticker() -> %v\n", core.FmtRFC3339Millis(time.Now().UTC()))
 			count++
 			if count == 2 {
@@ -49,4 +49,36 @@ func tickerRun(ctrl <-chan *Message, t *Ticker) {
 		default:
 		}
 	}
+}
+
+func ExampleTicker_IsFinalized_True() {
+	t := NewPrimaryTicker(time.Second * 5)
+	go func() {
+		time.Sleep(time.Second * 6)
+		t.Stop()
+	}()
+
+	fmt.Printf("test: IsFinalized() -> [finalized:%v]\n", t.IsFinalized())
+	fmt.Printf("test: Stopped() -> %v\n", t.IsStopped())
+
+	//Output:
+	//test: IsFinalized() -> [finalized:true]
+	//test: Stopped() -> true
+}
+
+func ExampleTicker_IsFinalized_False() {
+	t := NewPrimaryTicker(time.Second * 5)
+	//fmt.Printf("test: Stopped() -> %v\n", t.IsStopped())
+
+	go func() {
+		time.Sleep(time.Second * 20)
+		t.Stop()
+	}()
+
+	fmt.Printf("test: IsFinalized() -> [finalized:%v]\n", t.IsFinalized())
+	fmt.Printf("test: Stopped() -> %v\n", t.IsStopped())
+
+	//Output:
+	//test: IsFinalized() -> [finalized:false]
+	//test: Stopped() -> false
 }
