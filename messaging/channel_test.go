@@ -6,7 +6,9 @@ import (
 )
 
 func ExampleNewChannel() {
-	c := NewChannel()
+	c := NewChannel("test")
+
+	fmt.Printf("test: NewChannel() -> [name:%v]\n", c)
 
 	fmt.Printf("test: NewChannel() -> [enabled:%v]\n", c.IsEnabled())
 
@@ -20,6 +22,7 @@ func ExampleNewChannel() {
 	fmt.Printf("test: NewChannel_Close()   -> [closed:%v]\n", c.C == nil)
 
 	//Output:
+	//test: NewChannel() -> [name:test]
 	//test: NewChannel() -> [enabled:false]
 	//test: NewChannel_Enable()  -> [enabled:true]
 	//test: NewChannel_Disable() -> [enabled:false]
@@ -28,7 +31,7 @@ func ExampleNewChannel() {
 }
 
 func ExampleNewChannel_Send() {
-	c := NewChannel()
+	c := NewChannel("test-send")
 	msg := NewControlMessage("", "", StartupEvent)
 
 	c.Enable()

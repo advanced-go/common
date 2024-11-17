@@ -7,7 +7,7 @@ import (
 )
 
 func _ExampleTicker() {
-	t := NewTicker(time.Second * 2)
+	t := NewTicker("test-ticker", time.Second*2)
 	ctrl := make(chan *Message)
 
 	go tickerRun(ctrl, t)

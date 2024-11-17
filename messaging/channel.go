@@ -1,33 +1,29 @@
 package messaging
 
 type Channel struct {
-	C       chan *Message
 	enabled bool
+	name    string
+	C       chan *Message
 }
 
-func NewChannel() *Channel {
+func NewChannel(name string) *Channel {
 	c := new(Channel)
+	c.name = name
 	c.C = make(chan *Message, ChannelSize)
 	return c
 }
 
-func NewEnabledChannel() *Channel {
-	c := NewChannel()
+func NewEnabledChannel(name string) *Channel {
+	c := NewChannel(name)
 	c.enabled = true
 	return c
 }
 
-func (c *Channel) IsEnabled() bool {
-	return c.enabled
-}
-
-func (c *Channel) Enable() {
-	c.enabled = true
-}
-
-func (c *Channel) Disable() {
-	c.enabled = false
-}
+func (c *Channel) String() string  { return c.Name() }
+func (c *Channel) Name() string    { return c.name }
+func (c *Channel) IsEnabled() bool { return c.enabled }
+func (c *Channel) Enable()         { c.enabled = true }
+func (c *Channel) Disable()        { c.enabled = false }
 
 func (c *Channel) Close() {
 	if c.C != nil {
