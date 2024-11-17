@@ -5,13 +5,13 @@ import (
 )
 
 type Notifier interface {
-	OnTick(agent any, ticker *Ticker)
-	OnMessage(agent any, msg *Message, ch *Channel)
+	OnTick(agent any, src *Ticker)
+	OnMessage(agent any, msg *Message, src *Channel)
 	OnError(agent any, status *core.Status) *core.Status
 }
 
 type MutedNotifier struct{}
 
-func (n MutedNotifier) OnTick(agent any, ticker *Ticker)                    {}
-func (n MutedNotifier) OnMessage(agent any, msg *Message, ch *Channel)      {}
+func (n MutedNotifier) OnTick(agent any, src *Ticker)                       {}
+func (n MutedNotifier) OnMessage(agent any, msg *Message, src *Channel)     {}
 func (n MutedNotifier) OnError(agent any, status *core.Status) *core.Status { return status }
