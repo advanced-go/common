@@ -6,7 +6,7 @@ import (
 )
 
 func ExampleNewChannel() {
-	c := NewChannel("test")
+	c := NewChannel("test", false)
 
 	fmt.Printf("test: NewChannel() -> [name:%v]\n", c)
 
@@ -31,7 +31,7 @@ func ExampleNewChannel() {
 }
 
 func ExampleNewChannel_Send() {
-	c := NewChannel("test-send")
+	c := NewChannel("test-send", false)
 	msg := NewControlMessage("", "", StartupEvent)
 
 	c.Enable()

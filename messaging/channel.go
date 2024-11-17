@@ -1,22 +1,30 @@
 package messaging
 
+const (
+	EmissaryChannel = "EMISSARY"
+	MasterChannel   = "MASTER"
+)
+
 type Channel struct {
 	enabled bool
 	name    string
 	C       chan *Message
 }
 
-func NewChannel(name string) *Channel {
+func NewChannel(name string, enabled bool) *Channel {
 	c := new(Channel)
 	c.name = name
+	c.enabled = enabled
 	c.C = make(chan *Message, ChannelSize)
 	return c
 }
 
-func NewEnabledChannel(name string) *Channel {
-	c := NewChannel(name)
-	c.enabled = true
-	return c
+func NewEmissaryChannel(enabled bool) *Channel {
+	return NewChannel(EmissaryChannel, enabled)
+}
+
+func NewMasterChannel(enabled bool) *Channel {
+	return NewChannel(MasterChannel, enabled)
 }
 
 func (c *Channel) String() string  { return c.Name() }
