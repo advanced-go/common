@@ -2,6 +2,10 @@ package messaging
 
 import "time"
 
+const (
+	PrimaryTicker = "main"
+)
+
 type Ticker struct {
 	name     string
 	duration time.Duration
@@ -15,6 +19,10 @@ func NewTicker(name string, duration time.Duration) *Ticker {
 	t.duration = duration
 	t.original = duration
 	return t
+}
+
+func NewPrimaryTicker(duration time.Duration) *Ticker {
+	return NewTicker(PrimaryTicker, duration)
 }
 
 func (t *Ticker) String() string          { return t.Name() }
