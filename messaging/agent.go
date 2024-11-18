@@ -28,9 +28,10 @@ type Agent interface {
 
 type OpsAgent interface {
 	Agent
+	Notifier
+	Tracer
 	core.ErrorHandler
-	// AddActivity - context + content
-	AddActivity(agentId string, content any)
+	//AddActivity(agentId string, content any)
 }
 
 func AddShutdown(curr, next func()) func() {
