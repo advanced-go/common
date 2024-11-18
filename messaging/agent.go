@@ -1,9 +1,5 @@
 package messaging
 
-import (
-	"github.com/advanced-go/common/core"
-)
-
 const (
 	ChannelSize = 16
 )
@@ -30,8 +26,7 @@ type OpsAgent interface {
 	Agent
 	Notifier
 	Tracer
-	core.ErrorHandler
-	//AddActivity(agentId string, content any)
+	Error
 }
 
 func AddShutdown(curr, next func()) func() {

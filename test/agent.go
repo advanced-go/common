@@ -19,10 +19,13 @@ func NewAgent(uri string, ch *messaging.Channel) messaging.OpsAgent {
 	return a
 }
 
-func (t *agent) Uri() string                  { return t.agentId }
-func (t *agent) Message(m *messaging.Message) { fmt.Printf("test: opsAgent.Message() -> %v\n", m) }
-func (t *agent) IsFinalized() bool            { return t.ch.IsFinalized() }
-func (t *agent) Handle(status *core.Status) *core.Status {
+func (t *agent) Uri() string                                                         { return t.agentId }
+func (t *agent) Message(m *messaging.Message)                                        { fmt.Printf("test: opsAgent.Message() -> %v\n", m) }
+func (t *agent) IsFinalized() bool                                                   { return t.ch.IsFinalized() }
+func (t *agent) OnTick(agent any, src *messaging.Ticker)                             {}
+func (t *agent) OnMessage(agent any, msg *messaging.Message, src *messaging.Channel) {}
+func (t *agent) OnError(agent any, status *core.Status) *core.Status                 { return status }
+func (t *agent) Exception(status *core.Status) *core.Status {
 	fmt.Printf("test: opsAgent.Handle() -> [status:%v]\n", status)
 	status.Handled = true
 	return status
