@@ -29,7 +29,7 @@ func NewPrimaryTicker(duration time.Duration) *Ticker {
 }
 
 func (t *Ticker) String() string          { return t.Name() }
-func (t *Ticker) Name() string            { return t.Name() }
+func (t *Ticker) Name() string            { return t.name }
 func (t *Ticker) Duration() time.Duration { return t.duration }
 func (t *Ticker) C() <-chan time.Time     { return t.ticker.C }
 func (t *Ticker) IsFinalized() bool {
