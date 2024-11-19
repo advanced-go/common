@@ -26,7 +26,7 @@ type OpsAgent interface {
 	Agent
 	Notifier
 	Tracer
-	Error
+	Dispatcher
 }
 
 func AddShutdown(curr, next func()) func() {
