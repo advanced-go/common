@@ -8,7 +8,7 @@ import (
 )
 
 var (
-	TestDispatch = new(testDispatch)
+	Dispatcher = new(testDispatch)
 )
 
 type testDispatch struct{}
