@@ -14,15 +14,15 @@ var (
 type testDispatch struct{}
 
 func (t *testDispatch) OnTick(agent any, src *messaging.Ticker) {
-	fmt.Printf("OnTick() -> %v : ticker:%v", DispatchName(agent), DispatchName(src))
+	fmt.Printf("OnTick() -> %v : ticker:%v\n", DispatchName(agent), DispatchName(src))
 }
 
 func (t *testDispatch) OnMessage(agent any, msg *messaging.Message, src *messaging.Channel) {
-	fmt.Printf("OnMsg() -> %v : %v channel:%v", DispatchName(agent), DispatchName(msg), DispatchName(src))
+	fmt.Printf("OnMsg() -> %v : %v channel:%v\n", DispatchName(agent), DispatchName(msg), DispatchName(src))
 }
 
 func (t *testDispatch) OnError(agent any, status *core.Status) *core.Status {
-	fmt.Printf("OnError() -> %v : %v", DispatchName(agent), DispatchName(status))
+	fmt.Printf("OnError() -> %v : %v\n", DispatchName(agent), DispatchName(status))
 	return status
 }
 
