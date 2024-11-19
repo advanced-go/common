@@ -30,8 +30,8 @@ func (t *agent) Notify(status *core.Status) *core.Status {
 	status.Handled = true
 	return status
 }
-func (t *agent) Trace(agentId string, activity any) {
-	fmt.Printf("test: opsAgent.Trace() -> %v : %v -> %v]\n", core.FmtRFC3339Millis(time.Now().UTC()), agentId, activity)
+func (t *agent) Trace(agent messaging.Agent, activity any) {
+	fmt.Printf("test: opsAgent.Trace() -> %v : %v -> %v]\n", core.FmtRFC3339Millis(time.Now().UTC()), agent, activity)
 }
 
 func (t *agent) Run() {}
