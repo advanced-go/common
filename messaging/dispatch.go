@@ -9,9 +9,12 @@ type Dispatcher interface {
 	OnError(agent any, status *core.Status) *core.Status
 }
 
-// MutedDispatcher - silent notifications
-type MutedDispatcher struct{}
+var (
+	MutedDispatcher = new(mutedDispatcher)
+)
 
-func (n MutedDispatcher) OnTick(agent any, src *Ticker)                       {}
-func (n MutedDispatcher) OnMessage(agent any, msg *Message, src *Channel)     {}
-func (n MutedDispatcher) OnError(agent any, status *core.Status) *core.Status { return status }
+type mutedDispatcher struct{}
+
+func (n mutedDispatcher) OnTick(agent any, src *Ticker)                       {}
+func (n mutedDispatcher) OnMessage(agent any, msg *Message, src *Channel)     {}
+func (n mutedDispatcher) OnError(agent any, status *core.Status) *core.Status { return status }
