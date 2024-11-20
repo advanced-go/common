@@ -5,7 +5,7 @@ import (
 )
 
 type Tracer interface {
-	Trace(agent Agent, activity any)
+	Trace(agent any, activity any)
 }
 
 var (
@@ -14,6 +14,10 @@ var (
 
 type defaultTracer struct{}
 
-func (d *defaultTracer) Trace(agent Agent, activity any) {
-	fmt.Printf("%v : %v", agent.Uri(), activity)
+func (d *defaultTracer) Trace(agent any, activity any) {
+	name := "<nil>"
+	if a, ok := agent.(Agent); ok {
+		name = a.Uri()
+	}
+	fmt.Printf("%v : %v", name, activity)
 }
