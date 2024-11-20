@@ -15,7 +15,7 @@ type statusT struct {
 	status *core.Status
 }
 
-func (s *statusT) Notify(agent any, status *core.Status) *core.Status {
+func (s *statusT) Notify(status *core.Status) *core.Status {
 	s.status = status
 	return status
 }

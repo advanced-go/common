@@ -8,11 +8,11 @@ import (
 func ExampleNewNotifier() {
 	n := NewNotifier()
 
-	n.Notify(nil, core.StatusNotFound())
+	n.Notify(core.StatusNotFound())
 	fmt.Printf("test: NewNotifier() -> [status:%v]\n", n.Status())
 
 	n.Reset()
-	n.Notify(nil, core.StatusNoContent())
+	n.Notify(core.StatusNoContent())
 	fmt.Printf("test: NewNotifier() -> [status:%v]\n", n.Status())
 
 	//Output:
