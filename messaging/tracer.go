@@ -16,7 +16,8 @@ type defaultTracer struct{}
 
 func (d *defaultTracer) Trace(agent any, activity any) {
 	name := "<nil>"
-	if a, ok := agent.(Agent); ok {
+	a := AgentCast(agent)
+	if a != nil {
 		name = a.Uri()
 	}
 	fmt.Printf("%v : %v", name, activity)

@@ -22,11 +22,31 @@ type Agent interface {
 	Shutdown()
 }
 
+func AgentCast(agent any) Agent {
+	if agent == nil {
+		return nil
+	}
+	if a, ok := agent.(Agent); ok {
+		return a
+	}
+	return nil
+}
+
 type OpsAgent interface {
 	Agent
 	Notifier
 	Tracer
-	Dispatcher
+	//Dispatcher
+}
+
+func OpsAgentCast(agent any) OpsAgent {
+	if agent == nil {
+		return nil
+	}
+	if a, ok := agent.(OpsAgent); ok {
+		return a
+	}
+	return nil
 }
 
 func AddShutdown(curr, next func()) func() {

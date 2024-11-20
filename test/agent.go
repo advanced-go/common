@@ -19,19 +19,29 @@ func NewAgent(uri string, ch *messaging.Channel) messaging.OpsAgent {
 	return a
 }
 
-func (t *agent) Uri() string                                                         { return t.agentId }
-func (t *agent) Message(m *messaging.Message)                                        { fmt.Printf("test: opsAgent.Message() -> %v\n", m) }
-func (t *agent) IsFinalized() bool                                                   { return t.ch.IsFinalized() }
-func (t *agent) OnTick(agent any, src *messaging.Ticker)                             {}
-func (t *agent) OnMessage(agent any, msg *messaging.Message, src *messaging.Channel) {}
-func (t *agent) OnTrace(agent any, activity any)                                     {}
+func (t *agent) Uri() string                  { return t.agentId }
+func (t *agent) Message(m *messaging.Message) { fmt.Printf("test: opsAgent.Message() -> %v\n", m) }
+func (t *agent) IsFinalized() bool            { return t.ch.IsFinalized() }
+
+// func (t *agent) OnTick(agent any, src *messaging.Ticker)                             {}
+// func (t *agent) OnMessage(agent any, msg *messaging.Message, src *messaging.Channel) {}
+// func (t *agent) OnTrace(agent any, activity any)                                     {}
+
+// Notify - status notifications
 func (t *agent) Notify(status *core.Status) *core.Status {
 	fmt.Printf("test: opsAgent.Handle() -> [status:%v]\n", status)
 	status.Handled = true
 	return status
 }
-func (t *agent) Trace(agent messaging.Agent, activity any) {
-	fmt.Printf("test: opsAgent.Trace() -> %v : %v -> %v]\n", core.FmtRFC3339Millis(time.Now().UTC()), agent, activity)
+
+// Trace - activity tracing
+func (t *agent) Trace(agent any, activity any) {
+	name := "<nil>"
+	a := messaging.AgentCast(agent)
+	if a != nil {
+		name = a.Uri()
+	}
+	fmt.Printf("test: opsAgent.Trace() -> %v : %v -> %v]\n", core.FmtRFC3339Millis(time.Now().UTC()), name, activity)
 }
 
 func (t *agent) Run() {}
