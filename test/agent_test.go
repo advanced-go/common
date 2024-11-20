@@ -6,7 +6,7 @@ import (
 )
 
 func ExampleNewAgent() {
-	a := NewAgent("urn:any", nil)
+	a := NewAgent("urn:any")
 	if _, ok := any(a).(messaging.Agent); ok {
 		fmt.Printf("test: opsAgent() -> ok\n")
 	} else {

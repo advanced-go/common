@@ -7,35 +7,45 @@ import (
 	"time"
 )
 
-type agent struct {
+type agentT struct {
 	agentId string
 	ch      *messaging.Channel
 }
 
-func NewAgent(uri string, ch *messaging.Channel) messaging.OpsAgent {
-	a := new(agent)
+func NewAgent(uri string) messaging.OpsAgent {
+	a := new(agentT)
+	a.agentId = uri
+	a.ch = messaging.NewEmissaryChannel(true)
+	return a
+}
+
+func NewAgentWithChannel(uri string, ch *messaging.Channel) messaging.OpsAgent {
+	a := new(agentT)
 	a.agentId = uri
 	a.ch = ch
 	return a
 }
 
-func (t *agent) Uri() string                  { return t.agentId }
-func (t *agent) Message(m *messaging.Message) { fmt.Printf("test: opsAgent.Message() -> %v\n", m) }
-func (t *agent) IsFinalized() bool            { return t.ch.IsFinalized() }
+func (t *agentT) Uri() string { return t.agentId }
+func (t *agentT) Message(m *messaging.Message) {
+	if m == nil {
+		return
+	}
+	t.ch.C <- m
+	//fmt.Printf("test: opsAgent.Message() -> %v\n", m)
+}
 
-// func (t *agent) OnTick(agent any, src *messaging.Ticker)                             {}
-// func (t *agent) OnMessage(agent any, msg *messaging.Message, src *messaging.Channel) {}
-// func (t *agent) OnTrace(agent any, activity any)                                     {}
+func (t *agentT) IsFinalized() bool { return t.ch.IsFinalized() }
 
 // Notify - status notifications
-func (t *agent) Notify(status *core.Status) *core.Status {
+func (t *agentT) Notify(status *core.Status) *core.Status {
 	fmt.Printf("test: opsAgent.Handle() -> [status:%v]\n", status)
 	status.Handled = true
 	return status
 }
 
 // Trace - activity tracing
-func (t *agent) Trace(agent messaging.Agent, event, activity string) {
+func (t *agentT) Trace(agent messaging.Agent, event, activity string) {
 	if agent == nil {
 		fmt.Printf("test: opsAgent.Trace() -> %v : %v -> %v %v]\n", core.FmtRFC3339Millis(time.Now().UTC()), agent, event, activity)
 	} else {
@@ -43,10 +53,28 @@ func (t *agent) Trace(agent messaging.Agent, event, activity string) {
 	}
 }
 
-func (t *agent) Run() {}
-func (t *agent) Shutdown() {
-	if t.ch != nil {
-		t.ch.Close()
-		t.ch = nil
+func (t *agentT) Run() {
+	for {
+		select {
+		case msg := <-t.ch.C:
+			switch msg.Event() {
+			case messaging.ShutdownEvent:
+				t.finalize()
+				return
+			default:
+			}
+		default:
+		}
 	}
+}
+
+func (t *agentT) Shutdown() {
+	msg := messaging.NewControlMessage(t.Uri(), t.Uri(), messaging.ShutdownEvent)
+	t.ch.Enable()
+	t.ch.C <- msg
+}
+
+func (t *agentT) finalize() {
+	t.ch.Close()
+	t.ch = nil
 }

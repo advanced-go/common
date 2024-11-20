@@ -1,11 +1,7 @@
 package test
 
-import (
-	"github.com/advanced-go/common/messaging"
-)
-
 func ExampleDefaultTracer_Trace() {
-	a := NewAgent("agent:test", messaging.NewEmissaryChannel(true))
+	a := NewAgent("agent:test")
 	DefaultTracer.Trace(nil, "event:shutdown", "agent shutdown")
 	//fmt.Printf("\n")
 

@@ -10,7 +10,7 @@ import (
 func ExampleDispatchName() {
 	fmt.Printf("test: DispatchName() -> %v\n", DispatchName(nil))
 
-	a := NewAgent("agent-test", nil)
+	a := NewAgent("agent-test")
 	fmt.Printf("test: DispatchName() -> %v\n", DispatchName(a))
 
 	t := messaging.NewTicker("ticker-test", 100)
