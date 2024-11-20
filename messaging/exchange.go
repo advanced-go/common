@@ -132,7 +132,7 @@ func (e *Exchange) Register(agent Agent) error {
 		return errors.New("error: exchange.Register() agent is nil")
 	}
 	if agent.Uri() == "" {
-		return errors.New("error: exchange.Register() agent Uri is nil")
+		return errors.New("error: exchange.Register() agent Uri is empty")
 	}
 	_, ok := e.m.Load(agent.Uri())
 	if ok {
