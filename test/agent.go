@@ -24,7 +24,7 @@ func (t *agent) Message(m *messaging.Message)                                   
 func (t *agent) IsFinalized() bool                                                   { return t.ch.IsFinalized() }
 func (t *agent) OnTick(agent any, src *messaging.Ticker)                             {}
 func (t *agent) OnMessage(agent any, msg *messaging.Message, src *messaging.Channel) {}
-func (t *agent) OnError(agent any, status *core.Status) *core.Status                 { return status }
+func (t *agent) OnTrace(agent any, activity any)                                     {}
 func (t *agent) Notify(status *core.Status) *core.Status {
 	fmt.Printf("test: opsAgent.Handle() -> [status:%v]\n", status)
 	status.Handled = true

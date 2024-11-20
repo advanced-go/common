@@ -25,7 +25,6 @@ type Agent interface {
 type OpsAgent interface {
 	Agent
 	Notifier
-	Tracer
 	Dispatcher
 }
 

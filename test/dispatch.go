@@ -21,9 +21,8 @@ func (t *testDispatch) OnMessage(agent any, msg *messaging.Message, src *messagi
 	fmt.Printf("OnMsg()   -> %v : %v channel:%v\n", DispatchName(agent), DispatchName(msg), DispatchName(src))
 }
 
-func (t *testDispatch) OnError(agent any, status *core.Status) *core.Status {
-	fmt.Printf("OnError() -> %v : %v\n", DispatchName(agent), DispatchName(status))
-	return status
+func (t *testDispatch) OnTrace(agent any, activity any) {
+	fmt.Printf("OnTrace() -> %v : %v\n", DispatchName(agent), activity)
 }
 
 func DispatchName(t any) string {
