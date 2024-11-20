@@ -9,7 +9,7 @@ func ExampleDefaultTracer_Trace() {
 	//fmt.Printf("\n")
 
 	//Output:
-	//OnTrace() -> <nil> : event:shutdown agent shutdown
-	//OnTrace() -> agent:test : event:shutdown agent shutdown
+	//test: Trace() -> <nil> : event:shutdown agent shutdown
+	//test: Trace() -> agent:test : event:shutdown agent shutdown
 
 }

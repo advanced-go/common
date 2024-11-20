@@ -13,9 +13,9 @@ type defaultTracer struct{}
 
 func (d *defaultTracer) Trace(agent messaging.Agent, event, activity string) {
 	if agent == nil {
-		fmt.Printf("OnTrace() -> %v : %v %v\n", agent, event, activity)
+		fmt.Printf("test: Trace() -> %v : %v %v\n", agent, event, activity)
 
 	} else {
-		fmt.Printf("OnTrace() -> %v : %v %v\n", agent.Uri(), event, activity)
+		fmt.Printf("test: Trace() -> %v : %v %v\n", agent.Uri(), event, activity)
 	}
 }
