@@ -11,11 +11,11 @@ var (
 
 type defaultTracer struct{}
 
-func (d *defaultTracer) Trace(agent, activity any) {
-	name := "<nil>"
-	a := messaging.AgentCast(agent)
-	if a != nil {
-		name = a.Uri()
+func (d *defaultTracer) Trace(agent messaging.Agent, event, activity string) {
+	if agent == nil {
+		fmt.Printf("OnTrace() -> %v : %v %v\n", agent, event, activity)
+
+	} else {
+		fmt.Printf("OnTrace() -> %v : %v %v\n", agent.Uri(), event, activity)
 	}
-	fmt.Printf("OnTrace() -> %v : %v\n", name, activity)
 }

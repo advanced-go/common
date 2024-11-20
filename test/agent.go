@@ -35,13 +35,12 @@ func (t *agent) Notify(status *core.Status) *core.Status {
 }
 
 // Trace - activity tracing
-func (t *agent) Trace(agent any, activity any) {
-	name := "<nil>"
-	a := messaging.AgentCast(agent)
-	if a != nil {
-		name = a.Uri()
+func (t *agent) Trace(agent messaging.Agent, event, activity string) {
+	if agent == nil {
+		fmt.Printf("test: opsAgent.Trace() -> %v : %v -> %v %v]\n", core.FmtRFC3339Millis(time.Now().UTC()), agent, event, activity)
+	} else {
+		fmt.Printf("test: opsAgent.Trace() -> %v : %v -> %v %v]\n", core.FmtRFC3339Millis(time.Now().UTC()), agent, event, activity)
 	}
-	fmt.Printf("test: opsAgent.Trace() -> %v : %v -> %v]\n", core.FmtRFC3339Millis(time.Now().UTC()), name, activity)
 }
 
 func (t *agent) Run() {}

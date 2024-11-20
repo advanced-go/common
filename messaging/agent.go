@@ -36,7 +36,6 @@ type OpsAgent interface {
 	Agent
 	Notifier
 	Tracer
-	//Dispatcher
 }
 
 func OpsAgentCast(agent any) OpsAgent {
