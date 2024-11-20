@@ -79,18 +79,18 @@ func (e *Exchange) Broadcast(msg *Message) {
 	if msg.Event() == ShutdownEvent {
 		return
 	}
-	go func() {
-		for _, uri := range e.List() {
-			a := e.Get(uri)
-			if a == nil {
-				continue
-			}
-			a.Message(msg)
-			//if msg.Event() == ShutdownEvent {
-			//	d.m.Delete(uri)
-			//}
+	//go func() {
+	for _, uri := range e.List() {
+		a := e.Get(uri)
+		if a == nil {
+			continue
 		}
-	}()
+		a.Message(msg)
+		//if msg.Event() == ShutdownEvent {
+		//	d.m.Delete(uri)
+		//}
+	}
+	//}()
 }
 
 // RegisterMailbox - register a mailbox
