@@ -77,10 +77,10 @@ var noContentStatus = func() *Status {
 }()
 
 type Status struct {
-	Code      int    `jsonx:"code"`
-	Err       error  `jsonx:"err"`
-	RequestId string `jsonx:"request-id"`
-	Handled   bool   `jsonx:"handled"`
+	Code      int    `json:"code"`
+	Err       error  `json:"err"`
+	RequestId string `json:"request-id"`
+	Handled   bool   `json:"handled"`
 	Duration  time.Duration
 	Content   any
 	trace     []string
