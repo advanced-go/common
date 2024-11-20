@@ -5,7 +5,7 @@ import (
 )
 
 type Tracer interface {
-	Trace(agent any, activity any)
+	Trace(agent, activity any)
 }
 
 var (
@@ -14,7 +14,7 @@ var (
 
 type defaultTracer struct{}
 
-func (d *defaultTracer) Trace(agent any, activity any) {
+func (d *defaultTracer) Trace(agent, activity any) {
 	name := "<nil>"
 	a := AgentCast(agent)
 	if a != nil {
