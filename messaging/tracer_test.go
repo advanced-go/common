@@ -29,14 +29,14 @@ func (t *agent) Shutdown() {
 
 func ExampleDefaultTracer_Trace() {
 	a := NewAgent("agent:test", NewEmissaryChannel(true))
-	DefaultTracer.Trace(nil, "event:shutdown", "agent shutdown")
+	DefaultTracer.Trace(nil, EmissaryChannel, "event:shutdown", "agent shutdown")
 	fmt.Printf("\n")
 
-	DefaultTracer.Trace(a, "event:shutdown", "agent shutdown")
+	DefaultTracer.Trace(a, MasterChannel, "event:shutdown", "agent shutdown")
 	fmt.Printf("\n")
 
 	//Output:
-	//<nil> : event:shutdown agent shutdown
-	//agent:test : event:shutdown agent shutdown
+	//<nil> : emissary event:shutdown agent shutdown
+	//agent:test : master event:shutdown agent shutdown
 
 }

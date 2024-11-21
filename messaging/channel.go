@@ -5,9 +5,9 @@ import (
 )
 
 const (
-	EmissaryChannel         = "EMISSARY"
-	MasterChannel           = "MASTER"
-	PrimaryChannel          = "PRIMARY"
+	EmissaryChannel         = "emissary"
+	MasterChannel           = "master"
+	PrimaryChannel          = "primary"
 	channelFinalizeAttempts = 3
 	channelFinalizeDuration = time.Second * 5
 )
