@@ -42,7 +42,7 @@ func (t *Ticker) Start(newDuration time.Duration) {
 	} else {
 		t.duration = newDuration
 	}
-	t.Stop()
+	t.ticker.Stop()
 	t.ticker.Reset(newDuration)
 }
 
