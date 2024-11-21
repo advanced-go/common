@@ -54,18 +54,20 @@ func (t *agentT) Trace(agent messaging.Agent, event, activity string) {
 }
 
 func (t *agentT) Run() {
-	for {
-		select {
-		case msg := <-t.ch.C:
-			switch msg.Event() {
-			case messaging.ShutdownEvent:
-				t.finalize()
-				return
+	go func() {
+		for {
+			select {
+			case msg := <-t.ch.C:
+				switch msg.Event() {
+				case messaging.ShutdownEvent:
+					t.finalize()
+					return
+				default:
+				}
 			default:
 			}
-		default:
 		}
-	}
+	}()
 }
 
 func (t *agentT) Shutdown() {
