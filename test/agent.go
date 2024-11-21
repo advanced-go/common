@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"github.com/advanced-go/common/core"
 	"github.com/advanced-go/common/messaging"
-	"time"
 )
 
 type agentT struct {
@@ -47,9 +46,9 @@ func (t *agentT) Notify(status *core.Status) *core.Status {
 // Trace - activity tracing
 func (t *agentT) Trace(agent messaging.Agent, event, activity string) {
 	if agent == nil {
-		fmt.Printf("test: opsAgent.Trace() -> %v : %v -> %v %v]\n", core.FmtRFC3339Millis(time.Now().UTC()), agent, event, activity)
+		fmt.Printf("test: Trace() -> %v : %v %v]\n", agent, event, activity)
 	} else {
-		fmt.Printf("test: opsAgent.Trace() -> %v : %v -> %v %v]\n", core.FmtRFC3339Millis(time.Now().UTC()), agent, event, activity)
+		fmt.Printf("test: Trace() -> %v : %v %v]\n", agent.Uri(), event, activity)
 	}
 }
 
