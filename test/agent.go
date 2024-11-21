@@ -8,8 +8,9 @@ import (
 )
 
 type agentT struct {
-	agentId string
-	ch      *messaging.Channel
+	agentId      string
+	ch           *messaging.Channel
+	shutdownFunc func()
 }
 
 func NewAgent(uri string) messaging.OpsAgent {
@@ -53,6 +54,9 @@ func (t *agentT) Trace(agent messaging.Agent, event, activity string) {
 	}
 }
 
+// Add - add a shutdown function
+func (t *agentT) Add(f func()) { t.shutdownFunc = messaging.AddShutdown(t.shutdownFunc, f) }
+
 func (t *agentT) Run() {
 	go func() {
 		for {
@@ -71,6 +75,9 @@ func (t *agentT) Run() {
 }
 
 func (t *agentT) Shutdown() {
+	if t.shutdownFunc != nil {
+		t.shutdownFunc()
+	}
 	msg := messaging.NewControlMessage(t.Uri(), t.Uri(), messaging.ShutdownEvent)
 	t.ch.Enable()
 	t.ch.C <- msg
