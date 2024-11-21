@@ -9,8 +9,8 @@ import (
 )
 
 const (
-	exchangeFinalizeDuration = time.Second * 30
-	exchangeFinalizeAttempts = 4
+	exchangeFinalizeDuration = time.Second * 5
+	exchangeFinalizeAttempts = 3
 )
 
 type Mailbox interface {
