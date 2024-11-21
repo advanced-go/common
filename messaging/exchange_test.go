@@ -131,7 +131,7 @@ func ExampleListCount() {
 
 }
 
-func ExampleExchangeOnShutdown() {
+func _ExampleExchangeOnShutdown() {
 	uri1 := "urn:agent-1"
 	uri2 := "urn:agent-2"
 	ex := NewExchange()

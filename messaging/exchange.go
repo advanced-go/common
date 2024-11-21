@@ -137,11 +137,14 @@ func (e *Exchange) Register(agent Agent) error {
 		return errors.New(fmt.Sprintf("error: exchange.Register() agent already exists: [%v]", agent.Uri()))
 	}
 	e.m.Store(agent.Uri(), agent)
-	if sd, ok1 := agent.(OnShutdown); ok1 {
-		sd.Add(func() {
-			e.m.Delete(agent.Uri())
-		})
-	}
+	/*
+		if sd, ok1 := agent.(OnShutdown); ok1 {
+			sd.Add(func() {
+				e.m.Delete(agent.Uri())
+			})
+		}
+
+	*/
 	return nil
 }
 
@@ -169,6 +172,8 @@ func (e *Exchange) Shutdown() {
 			continue
 		}
 		a.Shutdown()
+		// TODO: verify
+		e.m.Delete(uri)
 	}
 	//	}()
 }
