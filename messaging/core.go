@@ -28,22 +28,22 @@ const (
 	PauseEvent  = "event:pause"  // disable data channel receive
 	ResumeEvent = "event:resume" // enable data channel receive
 
-	ContentType       = "Content-Type"
-	XRelatesTo        = "x-relates-to"
-	XMessageId        = "x-message-id"
-	XTo               = "x-to"
-	XFrom             = "x-from"
-	XEvent            = "x-event"
-	XChannel          = "x-channel"
-	XAgentId          = "x-agent-id"
-	XForwardTo        = "x-forward-to"
-	ContentTypeStatus = "application/status"
-	ContentTypeConfig = "application/config"
-	ChannelData       = "DATA"
-	ChannelControl    = "CTRL"
-	ChannelRight      = "RIGHT"
-	ChannelLeft       = "LEFT"
-	ChannelNone       = "NONE"
+	ContentType        = "Content-Type"
+	XRelatesTo         = "x-relates-to"
+	XMessageId         = "x-message-id"
+	XTo                = "x-to"
+	XFrom              = "x-from"
+	XEvent             = "x-event"
+	XChannel           = "x-channel"
+	XAgentId           = "x-agent-id"
+	XForwardTo         = "x-forward-to"
+	ContentTypeStatus  = "application/status"
+	ContentTypeConfig  = "application/config"
+	DataChannelType    = "DATA"
+	ControlChannelType = "CTRL"
+	//ChannelRight      = "RIGHT"
+	//ChannelLeft       = "LEFT"
+	//ChannelNone = "NONE"
 )
 
 // SendFunc - uniform interface for messaging
@@ -62,25 +62,31 @@ type Message struct {
 	ReplyTo Handler
 }
 
-func NewMessage(channel, to, from, event string) *Message {
+func NewMessage(channel, to, from, event string, body any) *Message {
 	m := new(Message)
-	if len(channel) == 0 {
-		channel = ChannelNone
-	}
+	//if len(channel) == 0 {
+	//	channel = ChannelNone
+	//}
 	m.Header = make(http.Header)
 	m.Header.Add(XChannel, channel)
 	m.Header.Add(XTo, to)
 	m.Header.Add(XFrom, from)
 	m.Header.Add(XEvent, event)
+	m.Body = body
 	return m
 }
 
 func NewControlMessage(to, from, event string) *Message {
-	return NewMessage(ChannelControl, to, from, event)
+	return NewMessage(ControlChannelType, to, from, event, nil)
 }
 
+func NewControlMessageWithBody(to, from, event string, body any) *Message {
+	return NewMessage(ControlChannelType, to, from, event, body)
+}
+
+/*
 func NewDataMessage(to, from, event string) *Message {
-	return NewMessage(ChannelData, to, from, event)
+	return NewMessage(ChannelData, to, from, event,nil)
 }
 
 func NewRightChannelMessage(to, from, event string, body any) *Message {
@@ -95,7 +101,6 @@ func NewLeftChannelMessage(to, from, event string, body any) *Message {
 	return m
 }
 
-/*
 func NewStatusMessage(to, from string, status *core.Status) *Message {
 	m := NewMessage(ChannelStatus, to, from, StatusEvent)
 	m.SetContent(ContentTypeStatus, status)
@@ -107,13 +112,13 @@ func NewStatusMessage(to, from string, status *core.Status) *Message {
 */
 
 func NewMessageWithReply(channel, to, from, event string, replyTo Handler) *Message {
-	m := NewMessage(channel, to, from, event)
+	m := NewMessage(channel, to, from, event, nil)
 	m.ReplyTo = replyTo
 	return m
 }
 
 func NewMessageWithStatus(channel, to, from, event string, status *core.Status) *Message {
-	m := NewMessage(channel, to, from, event)
+	m := NewMessage(channel, to, from, event, nil)
 	m.SetContent(ContentTypeStatus, status)
 	m.Body = status
 	return m
@@ -224,7 +229,7 @@ func SendReply(msg *Message, status *core.Status) {
 	if msg == nil || msg.ReplyTo == nil {
 		return
 	}
-	m := NewMessageWithStatus(ChannelNone, msg.From(), msg.To(), msg.Event(), status)
+	m := NewMessageWithStatus("", msg.From(), msg.To(), msg.Event(), status)
 	m.Header.Add(XRelatesTo, msg.RelatesTo())
 	msg.ReplyTo(m)
 }

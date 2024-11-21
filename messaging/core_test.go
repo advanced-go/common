@@ -11,10 +11,10 @@ func handler(msg *Message) {
 }
 
 func ExampleReplyTo() {
-	msg := NewMessageWithReply(ChannelNone, "test", "", "startup", handler)
+	msg := NewMessageWithReply(channelNone, "test", "", "startup", handler)
 	SendReply(msg, core.StatusOK())
 
-	msg = NewMessage(ChannelNone, "test", "", "startup")
+	msg = NewMessage(channelNone, "test", "", "startup", nil)
 	SendReply(msg, core.StatusOK())
 
 	//Output:
@@ -24,7 +24,7 @@ func ExampleReplyTo() {
 
 func ExampleStatusContent() {
 	status := core.NewStatus(http.StatusTeapot)
-	m := NewMessage(ChannelNone, "to", "from", StartupEvent)
+	m := NewMessage(channelNone, "to", "from", StartupEvent, nil)
 
 	err := m.SetContent("", status)
 	fmt.Printf("test: SetContent(\"\",status) -> [%v]\n", err)
@@ -35,7 +35,7 @@ func ExampleStatusContent() {
 	err = m.SetContent(ContentTypeStatus, status)
 	fmt.Printf("test: SetContent(\"%v\",status) -> [%v]\n", ContentTypeStatus, err)
 
-	m = NewMessage(ChannelNone, "to", "from", StartupEvent)
+	m = NewMessage(channelNone, "to", "from", StartupEvent, nil)
 	ct, body, ok := m.Content()
 	fmt.Printf("test: Content() -> [ct:%v] [body:%v] [ok:%v]\n", ct, body, ok)
 
@@ -46,7 +46,7 @@ func ExampleStatusContent() {
 	s := m.Status()
 	fmt.Printf("test: Status() -> [body:%v]\n", s)
 
-	m = NewMessageWithStatus(ChannelNone, "to", "from", StartupEvent, status)
+	m = NewMessageWithStatus(channelNone, "to", "from", StartupEvent, status)
 	s = m.Status()
 	fmt.Printf("test: NewMessageWithStatus() -> [body:%v]\n", s)
 
@@ -64,7 +64,7 @@ func ExampleStatusContent() {
 func ExampleConfigContent() {
 	cfg := make(map[string]string)
 	cfg["uri"] = "http://www.google/com"
-	m := NewMessage(ChannelNone, "to", "from", StartupEvent)
+	m := NewMessage(channelNone, "to", "from", StartupEvent, nil)
 
 	ct, body, ok := m.Content()
 	fmt.Printf("test: Content() -> [ct:%v] [body:%v] [ok:%v]\n", ct, body, ok)

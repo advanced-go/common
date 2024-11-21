@@ -22,12 +22,12 @@ func newTestAgent(uri string, ctrl, data *Channel) *testAgent {
 	t := new(testAgent)
 	t.agentId = uri
 	if ctrl == nil {
-		t.ctrl = NewChannel(ChannelData, true) //make(chan *Message, ChannelSize)
+		t.ctrl = NewChannel(DataChannelType, true) //make(chan *Message, ChannelSize)
 	} else {
 		t.ctrl = ctrl
 	}
 	if data == nil {
-		t.data = NewChannel(ChannelControl, true) //make(chan *Message, ChannelSize)
+		t.data = NewChannel(ControlChannelType, true) //make(chan *Message, ChannelSize)
 	} else {
 		t.data = data
 	}
@@ -41,11 +41,11 @@ func (t *testAgent) Message(msg *Message) {
 		return
 	}
 	switch msg.Channel() {
-	case ChannelControl:
+	case ControlChannelType:
 		if t.ctrl != nil {
 			t.ctrl.C <- msg
 		}
-	case ChannelData:
+	case DataChannelType:
 		if t.data != nil {
 			t.data.C <- msg
 		}
@@ -144,14 +144,13 @@ func ExampleAgentRun() {
 	a := newTestAgent(uri, nil, nil)
 	a.Run()
 	a.Message(NewControlMessage(uri, "ExampleAgentRun()", StartupEvent))
-	a.Message(NewDataMessage(uri, "ExampleAgentRun()", DataEvent))
+	//a.Message(NewDataMessage(uri, "ExampleAgentRun()", DataEvent))
 	time.Sleep(time.Second)
 	a.Shutdown()
 	time.Sleep(time.Second)
 
 	//Output:
 	//test: AgentRun() -> [chan:CTRL] [from:ExampleAgentRun()] [to:urn:agent007] [event:startup]
-	//test: AgentRun() -> [chan:DATA] [from:ExampleAgentRun()] [to:urn:agent007] [event:data]
 	//test: AgentRun() -> [chan:CTRL] [from:urn:agent007] [to:urn:agent007] [event:shutdown]
 
 }

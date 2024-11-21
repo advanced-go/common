@@ -34,7 +34,7 @@ func ExampleReceiver_OK() {
 		fmt.Printf("test: Receiver() - in Done()\n")
 		return true
 	})
-	reply <- NewMessage(ChannelNone, "to", "from", "event")
+	reply <- NewMessage(channelNone, "to", "from", "event", nil)
 	result = <-status
 	fmt.Printf("test: Receiver() -> [status:%v] [duration:%v]\n", result, result.Duration)
 
