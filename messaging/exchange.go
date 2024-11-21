@@ -79,7 +79,6 @@ func (e *Exchange) Broadcast(msg *Message) {
 	if msg.Event() == ShutdownEvent {
 		return
 	}
-	//go func() {
 	for _, uri := range e.List() {
 		a := e.Get(uri)
 		if a == nil {
@@ -90,7 +89,6 @@ func (e *Exchange) Broadcast(msg *Message) {
 		//	d.m.Delete(uri)
 		//}
 	}
-	//}()
 }
 
 // RegisterMailbox - register a mailbox
@@ -164,15 +162,15 @@ func (e *Exchange) Get(uri string) Agent {
 
 // Shutdown - shutdown all agents
 func (e *Exchange) Shutdown() {
-	go func() {
-		for _, uri := range e.List() {
-			a := e.Get(uri)
-			if a == nil {
-				continue
-			}
-			a.Shutdown()
+	//go func() {
+	for _, uri := range e.List() {
+		a := e.Get(uri)
+		if a == nil {
+			continue
 		}
-	}()
+		a.Shutdown()
+	}
+	//	}()
 }
 
 // IsFinalized - determine if all agents have been shutdown and removed from the exchange
