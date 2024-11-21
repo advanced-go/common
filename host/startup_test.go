@@ -13,7 +13,7 @@ import (
 func emptyRun(uri string, ctrl, data <-chan *messaging.Message, state any) {
 }
 func testRegister(ex *messaging.Exchange, uri string, cmd chan *messaging.Message) error {
-	a := msg2.NewAgent(uri, cmd)
+	a := msg2.NewAgent(uri)
 	ex.Register(a) //.NewMailboxWithCtrl(uri, false, cmd, data))
 	return nil
 }
@@ -25,13 +25,13 @@ func ExampleCreateToSend() {
 	uriOne := "startup/one"
 	ex := messaging.NewExchange()
 
-	a := msg2.NewAgent(uriNone, nil)
+	a := msg2.NewAgent(uriNone)
 	err := ex.Register(a)
 	if err != nil {
 		fmt.Printf("test: NewAgent(%v) -> [err:%v]\n", uriNone, err)
 	}
 
-	a = msg2.NewAgent(uriOne, nil)
+	a = msg2.NewAgent(uriOne)
 	err = ex.Register(a)
 	if err != nil {
 		fmt.Printf("test: NewAgent(%v) -> [err:%v]\n", uriOne, err)
