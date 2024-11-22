@@ -11,7 +11,7 @@ func ExampleDefaultTracer_Trace() {
 	//fmt.Printf("\n")
 
 	//Output:
-	//test: Trace() -> <nil> : master event:shutdown agent shutdown
-	//test: Trace() -> agent:test : emissary event:shutdown agent shutdown
+	//test: Trace() -> <nil> : [master] [event:shutdown] [agent shutdown]
+	//test: Trace() -> agent:test : [emissary] [event:shutdown] [agent shutdown]
 
 }
