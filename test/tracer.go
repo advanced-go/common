@@ -23,8 +23,8 @@ func trace(agent messaging.Agent, channel, event, activity string) {
 		id = agent.Uri()
 	}
 	if activity == "" {
-		fmt.Printf("test: Trace() -> %v %v : [%v] [%v]\n", core.FmtRFC3339Millis(time.Now().UTC()), id, channel, event)
+		fmt.Printf("test: Trace() -> %v [%v] [%v] [%v]\n", core.FmtRFC3339Millis(time.Now().UTC()), channel, event, id)
 	} else {
-		fmt.Printf("test: Trace() -> %v %v : [%v] [%v] [%v]\n", core.FmtRFC3339Millis(time.Now().UTC()), id, channel, event, activity)
+		fmt.Printf("test: Trace() -> %v [%v] [%v] [%v] [%v]\n", core.FmtRFC3339Millis(time.Now().UTC()), channel, event, id, activity)
 	}
 }
