@@ -38,9 +38,10 @@ func (t *agentT) IsFinalized() bool { return t.ch.IsFinalized() }
 
 // Notify - status notifications
 func (t *agentT) Notify(status *core.Status) *core.Status {
-	fmt.Printf("test: opsAgent.Handle() -> [status:%v]\n", status)
-	status.Handled = true
-	return status
+	var e core.Output
+	//fmt.Printf("test: opsAgent.Handle() -> [status:%v]\n", status)
+	//status.Handled = true
+	return e.Handle(status)
 }
 
 // Trace - activity tracing
