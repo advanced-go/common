@@ -7,7 +7,7 @@ func ExampleDefaultTracer_Trace() {
 	DefaultTracer.Trace(nil, messaging.MasterChannel, "event:shutdown", "agent shutdown")
 	//fmt.Printf("\n")
 
-	DefaultTracer.Trace(a, messaging.EmissaryChannel, "event:shutdown", "agent shutdown")
+	DefaultTracer.Trace(a, messaging.EmissaryChannel, "event:shutdown", "")
 	//fmt.Printf("\n")
 
 	//Output:
