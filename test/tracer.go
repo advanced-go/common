@@ -2,7 +2,9 @@ package test
 
 import (
 	"fmt"
+	"github.com/advanced-go/common/core"
 	"github.com/advanced-go/common/messaging"
+	"time"
 )
 
 var (
@@ -17,9 +19,9 @@ func (d *defaultTracer) Trace(agent messaging.Agent, channel, event, activity st
 
 func trace(agent messaging.Agent, channel, event, activity string) {
 	if agent == nil {
-		fmt.Printf("test: Trace() -> %v : [%v] [%v] [%v]\n", agent, channel, event, activity)
+		fmt.Printf("test: Trace() -> %v %v : [%v] [%v] [%v]\n", core.FmtRFC3339Millis(time.Now().UTC()), agent, channel, event, activity)
 
 	} else {
-		fmt.Printf("test: Trace() -> %v : [%v] [%v] [%v]\n", agent.Uri(), channel, event, activity)
+		fmt.Printf("test: Trace() -> %v %v : [%v] [%v] [%v]\n", core.FmtRFC3339Millis(time.Now().UTC()), agent.Uri(), channel, event, activity)
 	}
 }
