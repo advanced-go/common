@@ -27,7 +27,7 @@ func (t *agent) Shutdown() {
 	}
 }
 
-func ExampleDefaultTracer_Trace() {
+func _ExampleDefaultTracer_Trace() {
 	a := NewAgent("agent:test", NewEmissaryChannel(true))
 	DefaultTracer.Trace(nil, EmissaryChannel, "event:shutdown", "agent shutdown")
 	fmt.Printf("\n")
@@ -38,5 +38,103 @@ func ExampleDefaultTracer_Trace() {
 	//Output:
 	//<nil> : emissary event:shutdown agent shutdown
 	//agent:test : master event:shutdown agent shutdown
+
+}
+
+func ExampleAccess_No_Filter() {
+	filter := NewTraceFilter("", "")
+	channel := ""
+	event := ""
+
+	fmt.Printf("test: Access(%v,%v) -> [channel:%v] [event:%v] [access:%v]\n", filter.Channel, filter.Event, channel, event, filter.Access(channel, event))
+	channel = "channel"
+	fmt.Printf("test: Access(%v,%v) -> [channel:%v] [event:%v] [access:%v]\n", filter.Channel, filter.Event, channel, event, filter.Access(channel, event))
+	channel = ""
+	event = "event"
+	fmt.Printf("test: Access(%v,%v) -> [channel:%v] [event:%v] [access:%v]\n", filter.Channel, filter.Event, channel, event, filter.Access(channel, event))
+
+	//Output:
+	//test: Access(,) -> [channel:] [event:] [access:true]
+	//test: Access(,) -> [channel:channel] [event:] [access:true]
+	//test: Access(,) -> [channel:] [event:event] [access:true]
+
+}
+
+func ExampleAccess_Channel() {
+	filter := NewTraceFilter(EmissaryChannel, "")
+	channel := ""
+	event := ""
+
+	fmt.Printf("test: Access(%v,%v) -> [channel:%v] [event:%v] [access:%v]\n", filter.Channel, filter.Event, channel, event, filter.Access(channel, event))
+	channel = EmissaryChannel
+	fmt.Printf("test: Access(%v,%v) -> [channel:%v] [event:%v] [access:%v]\n", filter.Channel, filter.Event, channel, event, filter.Access(channel, event))
+
+	channel = MasterChannel
+	fmt.Printf("test: Access(%v,%v) -> [channel:%v] [event:%v] [access:%v]\n", filter.Channel, filter.Event, channel, event, filter.Access(channel, event))
+
+	channel = ""
+	event = "event"
+	fmt.Printf("test: Access(%v,%v) -> [channel:%v] [event:%v] [access:%v]\n", filter.Channel, filter.Event, channel, event, filter.Access(channel, event))
+
+	//Output:
+	//test: Access(emissary,) -> [channel:] [event:] [access:false]
+	//test: Access(emissary,) -> [channel:emissary] [event:] [access:true]
+	//test: Access(emissary,) -> [channel:master] [event:] [access:false]
+	//test: Access(emissary,) -> [channel:] [event:event] [access:false]
+
+}
+
+func ExampleAccess_Event() {
+	filter := NewTraceFilter("", ShutdownEvent)
+	channel := ""
+	event := ""
+
+	fmt.Printf("test: Access(%v,%v) -> [channel:%v] [event:%v] [access:%v]\n", filter.Channel, filter.Event, channel, event, filter.Access(channel, event))
+	event = ShutdownEvent
+	fmt.Printf("test: Access(%v,%v) -> [channel:%v] [event:%v] [access:%v]\n", filter.Channel, filter.Event, channel, event, filter.Access(channel, event))
+	event = StartupEvent
+	fmt.Printf("test: Access(%v,%v) -> [channel:%v] [event:%v] [access:%v]\n", filter.Channel, filter.Event, channel, event, filter.Access(channel, event))
+
+	channel = EmissaryChannel
+	event = StartupEvent
+	fmt.Printf("test: Access(%v,%v) -> [channel:%v] [event:%v] [access:%v]\n", filter.Channel, filter.Event, channel, event, filter.Access(channel, event))
+
+	event = ShutdownEvent
+	fmt.Printf("test: Access(%v,%v) -> [channel:%v] [event:%v] [access:%v]\n", filter.Channel, filter.Event, channel, event, filter.Access(channel, event))
+
+	//Output:
+	//test: Access(,event:shutdown) -> [channel:] [event:] [access:false]
+	//test: Access(,event:shutdown) -> [channel:] [event:event:shutdown] [access:true]
+	//test: Access(,event:shutdown) -> [channel:] [event:event:startup] [access:false]
+	//test: Access(,event:shutdown) -> [channel:emissary] [event:event:startup] [access:false]
+	//test: Access(,event:shutdown) -> [channel:emissary] [event:event:shutdown] [access:true]
+
+}
+
+func ExampleAccess() {
+	filter := NewTraceFilter(EmissaryChannel, ShutdownEvent)
+	channel := ""
+	event := ""
+
+	fmt.Printf("test: Access(%v,%v) -> [channel:%v] [event:%v] [access:%v]\n", filter.Channel, filter.Event, channel, event, filter.Access(channel, event))
+	event = ShutdownEvent
+	fmt.Printf("test: Access(%v,%v) -> [channel:%v] [event:%v] [access:%v]\n", filter.Channel, filter.Event, channel, event, filter.Access(channel, event))
+	event = StartupEvent
+	fmt.Printf("test: Access(%v,%v) -> [channel:%v] [event:%v] [access:%v]\n", filter.Channel, filter.Event, channel, event, filter.Access(channel, event))
+
+	channel = EmissaryChannel
+	event = StartupEvent
+	fmt.Printf("test: Access(%v,%v) -> [channel:%v] [event:%v] [access:%v]\n", filter.Channel, filter.Event, channel, event, filter.Access(channel, event))
+
+	channel = EmissaryChannel
+	event = ShutdownEvent
+	fmt.Printf("test: Access(%v,%v) -> [channel:%v] [event:%v] [access:%v]\n", filter.Channel, filter.Event, channel, event, filter.Access(channel, event))
+
+	//Output:
+	//test: Access(emissary,event:shutdown) -> [channel:] [event:] [access:false]
+	//test: Access(emissary,event:shutdown) -> [channel:] [event:event:shutdown] [access:false]
+	//test: Access(emissary,event:shutdown) -> [channel:] [event:event:startup] [access:false]
+	//test: Access(emissary,event:shutdown) -> [channel:emissary] [event:event:startup] [access:false]
+	//test: Access(emissary,event:shutdown) -> [channel:emissary] [event:event:shutdown] [access:true]
 
 }

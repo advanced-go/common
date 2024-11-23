@@ -31,3 +31,14 @@ type TraceFilter struct {
 	Channel string
 	Event   string
 }
+
+func NewTraceFilter(channel, event string) *TraceFilter {
+	f := new(TraceFilter)
+	f.Channel = channel
+	f.Event = event
+	return f
+}
+
+func (f *TraceFilter) Access(channel, event string) bool {
+	return !(f.Channel != "" && f.Channel != channel) && !(f.Event != "" && f.Event != event)
+}
