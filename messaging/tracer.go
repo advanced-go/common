@@ -26,3 +26,8 @@ func (d *defaultTracer) Trace(agent Agent, channel, event, activity string) {
 
 	}
 }
+
+type TraceFilter struct {
+	Channel string
+	Event   string
+}
