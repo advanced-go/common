@@ -1,14 +1,19 @@
 package messaging
 
-import (
-	"fmt"
-	"github.com/advanced-go/common/core"
-)
+import "fmt"
 
+func ExampleTraceDispatch_Trace() {
+	fmt.Printf("test: TraceDispatch() -> \n")
+
+	//Output:
+	//test: TraceDispatch() ->
+}
+
+/*
 func ExampleMutedDispatcher() {
-	status := exampleDispatch(MutedDispatcher)
+	//status := exampleDispatch(MutedDispatcher)
 
-	fmt.Printf("test: MutedDispatcher() -> [status:%v]\n", status)
+	//fmt.Printf("test: MutedDispatcher() -> [status:%v]\n", status)
 
 	//Output:
 	//test: MutedDispatcher() -> [status:OK]
@@ -18,3 +23,6 @@ func ExampleMutedDispatcher() {
 func exampleDispatch(d Dispatcher) *core.Status {
 	return core.StatusOK()
 }
+
+
+*/

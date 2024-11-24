@@ -1,18 +1,54 @@
 package messaging
 
-// Dispatcher - interface for sending events
-type Dispatcher interface {
-	OnTick(agent any, src *Ticker)
-	OnMessage(agent any, msg *Message, src *Channel)
-	OnTrace(agent any, activity any)
-}
-
-var (
-	MutedDispatcher = new(mutedDispatcher)
+import (
+	"fmt"
+	"github.com/advanced-go/common/core"
+	"time"
 )
 
-type mutedDispatcher struct{}
+type TraceDispatcher interface {
+	Tracer
+}
 
-func (n mutedDispatcher) OnTick(agent any, src *Ticker)                   {}
-func (n mutedDispatcher) OnMessage(agent any, msg *Message, src *Channel) {}
-func (n mutedDispatcher) OnTrace(agent any, activity any)                 {}
+type traceDispatch struct {
+	all bool
+	m   map[string]string
+}
+
+func (t *traceDispatch) valid(event string) bool {
+	if t.all {
+		return true
+	}
+	if _, ok := t.m[event]; ok {
+		return true
+	}
+	return false
+}
+
+func (t *traceDispatch) Trace(agent Agent, channel, event, activity string) {
+	if !t.valid(event) {
+		return
+	}
+	id := "<nil>"
+	if agent != nil {
+		id = agent.Uri()
+	}
+	if activity == "" {
+		fmt.Printf("trace -> %v [%v] [%v] [%v]\n", core.FmtRFC3339Millis(time.Now().UTC()), channel, event, id)
+	} else {
+		fmt.Printf("trace -> %v [%v] [%v] [%v] [%v]\n", core.FmtRFC3339Millis(time.Now().UTC()), channel, event, id, activity)
+	}
+}
+
+func NewTraceDispatcher(events []string) TraceDispatcher {
+	t := new(traceDispatch)
+	if len(events) == 0 {
+		t.all = true
+	} else {
+		t.m = make(map[string]string)
+		for _, event := range events {
+			t.m[event] = ""
+		}
+	}
+	return t
+}
