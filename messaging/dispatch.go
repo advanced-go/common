@@ -11,12 +11,13 @@ type TraceDispatcher interface {
 }
 
 type traceDispatch struct {
-	all bool
-	m   map[string]string
+	allEvents bool
+	channel   string
+	m         map[string]string
 }
 
-func (t *traceDispatch) valid(event string) bool {
-	if t.all {
+func (t *traceDispatch) validEvent(event string) bool {
+	if t.allEvents {
 		return true
 	}
 	if _, ok := t.m[event]; ok {
@@ -25,8 +26,15 @@ func (t *traceDispatch) valid(event string) bool {
 	return false
 }
 
+func (t *traceDispatch) validChannel(channel string) bool {
+	if t.channel == "" {
+		return true
+	}
+	return t.channel == channel
+}
+
 func (t *traceDispatch) Trace(agent Agent, channel, event, activity string) {
-	if !t.valid(event) {
+	if !t.validEvent(event) || !t.validChannel(channel) {
 		return
 	}
 	id := "<nil>"
@@ -40,15 +48,16 @@ func (t *traceDispatch) Trace(agent Agent, channel, event, activity string) {
 	}
 }
 
-func NewTraceDispatcher(events []string) TraceDispatcher {
+func NewTraceDispatcher(events []string, channel string) TraceDispatcher {
 	t := new(traceDispatch)
 	if len(events) == 0 {
-		t.all = true
+		t.allEvents = true
 	} else {
 		t.m = make(map[string]string)
 		for _, event := range events {
 			t.m[event] = ""
 		}
 	}
+	t.channel = channel
 	return t
 }
