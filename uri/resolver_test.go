@@ -106,7 +106,7 @@ func ExampleResolve_Url() {
 
 }
 
-func ExampleResolve_UrlWithAuthority() {
+func ExampleResolve_UrlWithDomain() {
 	host := ""
 	auth := "github/advanced-go/timeseries"
 	path := "access"

@@ -31,11 +31,11 @@ func ExampleProxy_Register() {
 	fmt.Printf("test: Register(%v) -> [err:%v]\n", path, err)
 
 	//Output:
-	//test: Register("") -> [err:invalid argument: authority is empty]
-	//test: Register(http://localhost:8080/github/advanced-go/example-domain/activity) -> [err:invalid argument: HTTP Exchange is nil for authority : [http://localhost:8080/github/advanced-go/example-domain/activity]]
+	//test: Register("") -> [err:invalid argument: domain is empty]
+	//test: Register(http://localhost:8080/github/advanced-go/example-domain/activity) -> [err:invalid argument: HTTP Exchange is nil for domain : [http://localhost:8080/github/advanced-go/example-domain/activity]]
 	//test: Register(http://localhost:8080/github/advanced-go/example-domain/activity) -> [err:<nil>]
-	//test: Register(http://localhost:8080/github/advanced-go/example-domain/activity) -> [err:invalid argument: HTTP Exchange already exists for authority : [http://localhost:8080/github/advanced-go/example-domain/activity]]
-	//test: Register(http://localhost:8080/github/advanced-go/example-domain/activity) -> [err:invalid argument: HTTP Exchange already exists for authority : [http://localhost:8080/github/advanced-go/example-domain/activity]]
+	//test: Register(http://localhost:8080/github/advanced-go/example-domain/activity) -> [err:invalid argument: HTTP Exchange already exists for domain : [http://localhost:8080/github/advanced-go/example-domain/activity]]
+	//test: Register(http://localhost:8080/github/advanced-go/example-domain/activity) -> [err:invalid argument: HTTP Exchange already exists for domain : [http://localhost:8080/github/advanced-go/example-domain/activity]]
 
 }
 
@@ -76,13 +76,13 @@ func ExampleProxy_LookupByRequest() {
 	req, _ := http.NewRequest("", "https://www.google.com/search?q=golang", nil)
 	req2, _ := http.NewRequest("", "http://localhost:8081/github/advanced-go/search:google?q=golang", nil)
 	host := "www.google.com"
-	authority := "github/advanced-go/search"
+	domain := "github/advanced-go/search"
 
 	proxy.Register(host, appHttpExchange)
 	p := proxy.LookupByRequest(req)
 	fmt.Printf("test: Lookup(\"%v\") -> [proxy:%v]\n", req.URL.String(), p != nil)
 
-	proxy.Register(authority, appHttpExchange)
+	proxy.Register(domain, appHttpExchange)
 	p = proxy.LookupByRequest(req2)
 	fmt.Printf("test: Lookup(\"%v\") -> [proxy:%v]\n", req2.URL.String(), p != nil)
 

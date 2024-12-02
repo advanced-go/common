@@ -30,7 +30,7 @@ func ExampleDefault_Host() {
 
 }
 
-func ExampleDefault_Authority() {
+func ExampleDefault_Domain() {
 	start := time.Now().UTC()
 	values := make(url.Values)
 	values.Add("region", "*")
@@ -40,15 +40,15 @@ func ExampleDefault_Authority() {
 	req, _ := http.NewRequest("select", "https://github.com/advanced-go/example-domain/activity:v1/entry?"+uri.BuildQuery(values), nil)
 	req.Header.Add(XRequestId, "123-456")
 	req.Header.Add(XRelatesTo, "fmtlog testing")
-	req.Header.Add(core.XAuthority, "github/advanced-go/auth-from")
+	req.Header.Add(core.XDomain, "github/advanced-go/auth-from")
 	//fmt.Printf("test: NewRequest() -> [err:%v] [req:%v]\n", err, req != nil)
 	resp := http.Response{StatusCode: http.StatusOK}
 	logTest(InternalTraffic, start, time.Since(start), req, &resp, Routing{Route: "route", To: Primary, Percent: -1}, Controller{Timeout: -1})
 
-	fmt.Printf("test: Default-Authority() -> %v\n", "success")
+	fmt.Printf("test: Default-Domain() -> %v\n", "success")
 
 	//Output:
-	//test: Default-Authority() -> success
+	//test: Default-Domain() -> success
 
 }
 

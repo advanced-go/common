@@ -7,7 +7,7 @@ import (
 
 // Routing - routing attributes
 type Routing struct {
-	From    string // Authority
+	From    string // Domain
 	Route   string
 	To      string // Primary, secondary
 	Percent int

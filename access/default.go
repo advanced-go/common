@@ -199,5 +199,5 @@ func CreateTo(req *http.Request) string {
 	if to != "" {
 		return to
 	}
-	return uri.UprootAuthority(req.URL)
+	return uri.UprootDomain(req.URL)
 }

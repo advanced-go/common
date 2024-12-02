@@ -35,8 +35,8 @@ func (r *Resolver) url() {
 
 }
 
-func (r *Resolver) Url(host, authority, path string, query any, h http.Header) string {
-	path1 := BuildPath(authority, path, query)
+func (r *Resolver) Url(host, domain, path string, query any, h http.Header) string {
+	path1 := BuildPath(domain, path, query)
 	if h != nil && h.Get(XContentResolver) != "" {
 		p2 := createUrl(h, path1)
 		if p2 != "" {
@@ -57,10 +57,10 @@ func Cat(host, path string) string {
 	return origin + "/" + path
 }
 
-func BuildPath(authority, path string, query any) string {
+func BuildPath(domain, path string, query any) string {
 	path1 := strings.Builder{}
-	if authority != "" {
-		path1.WriteString(authority)
+	if domain != "" {
+		path1.WriteString(domain)
 		path1.WriteString(":")
 		//path1.WriteString(formatVersion2(version))
 	}
@@ -70,10 +70,10 @@ func BuildPath(authority, path string, query any) string {
 }
 
 /*
-func BuildPath(authority, path string, query any) string {
+func BuildPath(domain, path string, query any) string {
 	path1 := strings.Builder{}
-	if authority != "" {
-		path1.WriteString(authority)
+	if domain != "" {
+		path1.WriteString(domain)
 		path1.WriteString(":")
 		path1.WriteString(formatVersion2(version))
 	}
@@ -159,8 +159,8 @@ func (r *Resolver) Url(host, path string, query any, h http.Header) string {
 	return Cat(r.defaultHost, path1)
 }
 
-func (r *Resolver) UrlWithAuthority(host, authority, version, test string, query any, h http.Header) string {
-	path := BuildPath(authority, version, test, query)
+func (r *Resolver) UrlWithDomain(host, domain, version, test string, query any, h http.Header) string {
+	path := BuildPath(domain, version, test, query)
 	if h != nil && h.Get(XResolver) != "" {
 		p2 := createUrl(h, path) //h.Get(path)
 		if p2 != "" {

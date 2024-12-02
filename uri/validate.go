@@ -7,20 +7,20 @@ import (
 )
 
 const (
-	AuthorityPath     = "authority"
-	AuthorityRootPath = "/" + AuthorityPath
+	DomainPath     = "domain"
+	DomainRootPath = "/" + DomainPath
 )
 
 // ValidateURL - validate a URL
-func ValidateURL(url *url.URL, authority string) (p *Parsed, err error) {
+func ValidateURL(url *url.URL, domain string) (p *Parsed, err error) {
 	if url == nil {
 		return &Parsed{}, errors.New("error: URL is nil")
 	}
-	if len(authority) == 0 {
-		return &Parsed{}, errors.New("error: authority is empty")
+	if len(domain) == 0 {
+		return &Parsed{}, errors.New("error: domain is empty")
 	}
-	if url.Path == AuthorityRootPath {
-		return &Parsed{Path: AuthorityPath}, nil
+	if url.Path == DomainRootPath {
+		return &Parsed{Path: DomainPath}, nil
 	}
 	if url.RawQuery != "" {
 		p = Uproot(url.Path + "?" + url.RawQuery)
@@ -30,11 +30,11 @@ func ValidateURL(url *url.URL, authority string) (p *Parsed, err error) {
 	if !p.Valid {
 		return p, p.Err
 	}
-	if p.Authority != authority {
-		return p, errors.New(fmt.Sprintf("error: invalid URI, authority does not match: \"%v\" \"%v\"", url.Path, authority))
+	if p.Domain != domain {
+		return p, errors.New(fmt.Sprintf("error: invalid URI, domain does not match: \"%v\" \"%v\"", url.Path, domain))
 	}
 	if len(p.Path) == 0 {
-		return p, errors.New(fmt.Sprintf("error: invalid URI, path only contains an authority: \"%v\"", url.Path))
+		return p, errors.New(fmt.Sprintf("error: invalid URI, path only contains a domain: \"%v\"", url.Path))
 	}
 	return p, nil
 }

@@ -27,13 +27,13 @@ func SetAuthExchange(h core.HttpExchange, ok func(int) bool) {
 	}
 }
 
-// RegisterExchange - add an authority and Http Exchange handler to the proxy
-func RegisterExchange(authority string, handler core.HttpExchange) error {
+// RegisterExchange - add a domain and Http Exchange handler to the proxy
+func RegisterExchange(domain string, handler core.HttpExchange) error {
 	h := handler
 	if authExchange != nil {
 		h = NewConditionalIntermediary(authExchange, handler, okFunc)
 	}
-	return exchangeProxy.Register(authority, h)
+	return exchangeProxy.Register(domain, h)
 }
 
 // HttpHandler - process an HTTP request
@@ -47,7 +47,7 @@ func HttpHandler(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusBadRequest)
 		return
 	}
-	handler := exchangeProxy.Lookup(p.Authority)
+	handler := exchangeProxy.Lookup(p.Domain)
 	if handler == nil {
 		w.WriteHeader(http.StatusNotFound)
 		return

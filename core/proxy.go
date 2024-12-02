@@ -8,7 +8,7 @@ import (
 	"sync"
 )
 
-// ExchangeProxy - key value pairs of an authority -> HttpExchange
+// ExchangeProxy - key value pairs of a domain -> HttpExchange
 type ExchangeProxy struct {
 	m *sync.Map
 }
@@ -20,18 +20,18 @@ func NewExchangeProxy() *ExchangeProxy {
 	return p
 }
 
-func (p *ExchangeProxy) Register(authority string, handler HttpExchange) error {
-	if len(authority) == 0 {
-		return errors.New("invalid argument: authority is empty")
+func (p *ExchangeProxy) Register(domain string, handler HttpExchange) error {
+	if len(domain) == 0 {
+		return errors.New("invalid argument: domain is empty")
 	}
 	if handler == nil {
-		return errors.New(fmt.Sprintf("invalid argument: HTTP Exchange is nil for authority : [%v]", authority))
+		return errors.New(fmt.Sprintf("invalid argument: HTTP Exchange is nil for domain : [%v]", domain))
 	}
-	_, ok1 := p.m.Load(authority)
+	_, ok1 := p.m.Load(domain)
 	if ok1 {
-		return errors.New(fmt.Sprintf("invalid argument: HTTP Exchange already exists for authority : [%v]", authority))
+		return errors.New(fmt.Sprintf("invalid argument: HTTP Exchange already exists for domain : [%v]", domain))
 	}
-	p.m.Store(authority, handler)
+	p.m.Store(domain, handler)
 	return nil
 }
 
@@ -46,19 +46,19 @@ func (p *ExchangeProxy) LookupByRequest(req *http.Request) HttpExchange {
 		return ex
 	}
 
-	// Default to embedded authority
+	// Default to embedded domain
 	parsed := uri2.Uproot(req.URL.Path)
 	if parsed.Valid {
-		ex = p.Lookup(parsed.Authority)
+		ex = p.Lookup(parsed.Domain)
 	}
 	return ex
 }
 
-// Lookup - get an HttpExchange from the proxy, using an authority as a key
-func (p *ExchangeProxy) Lookup(authority string) HttpExchange {
-	v, ok := p.m.Load(authority)
+// Lookup - get an HttpExchange from the proxy, using an domain as a key
+func (p *ExchangeProxy) Lookup(domain string) HttpExchange {
+	v, ok := p.m.Load(domain)
 	if !ok {
-		return nil //, errors.New(fmt.Sprintf("error: proxyLookupByauthority() HTTP handler does not exist: [%v]", authority))
+		return nil //, errors.New(fmt.Sprintf("error: proxyLookupBydomain() HTTP handler does not exist: [%v]", domain))
 	}
 	if handler, ok1 := v.(HttpExchange); ok1 {
 		return handler

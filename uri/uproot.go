@@ -20,7 +20,7 @@ func Uproot(in string) *Parsed {
 	}
 	in = strings.ToLower(in)
 	if strings.HasPrefix(in, UrnScheme) {
-		return &Parsed{Valid: true, Authority: in, Path: in}
+		return &Parsed{Valid: true, Domain: in, Path: in}
 	}
 	u, err := url.Parse(in)
 	if err != nil {
@@ -37,9 +37,9 @@ func Uproot(in string) *Parsed {
 	case 0:
 		return &Parsed{Valid: false, Err: errors.New(fmt.Sprintf("error: path has no URN separator [%v]", u.Path))}
 	case 1:
-		return &Parsed{Valid: true, Authority: str[0], Query: u.RawQuery}
+		return &Parsed{Valid: true, Domain: str[0], Query: u.RawQuery}
 	case 2:
-		p := &Parsed{Valid: true, Authority: str[0], Path: str[1], Query: u.RawQuery}
+		p := &Parsed{Valid: true, Domain: str[0], Path: str[1], Query: u.RawQuery}
 		parseVersion(p)
 		index := strings.Index(p.Path, "/")
 		if index != -1 {
@@ -53,7 +53,7 @@ func Uproot(in string) *Parsed {
 	}
 }
 
-func UprootAuthority(url *url.URL) string {
+func UprootDomain(url *url.URL) string {
 	if url == nil {
 		return ""
 	}

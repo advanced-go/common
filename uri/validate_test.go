@@ -31,9 +31,9 @@ func ExampleValidateURL_Invalid() {
 	//Output:
 	//test: ValidateURL(nil,"") -> [error: URL is nil]
 	//test: ValidateURL("","test") -> [error: invalid input, URI is empty]
-	//test: ValidateURL("","test") -> [error: authority is empty]
-	//test: ValidateURL("/search","github/advanced-go/http2") -> [error: invalid URI, authority does not match: "/search" "github/advanced-go/http2"]
-	//test: ValidateURL("/github/advanced-go/http2","github/advanced-go/http2") -> [error: invalid URI, path only contains an authority: "/github/advanced-go/http2"]
+	//test: ValidateURL("","test") -> [error: domain is empty]
+	//test: ValidateURL("/search","github/advanced-go/http2") -> [error: invalid URI, domain does not match: "/search" "github/advanced-go/http2"]
+	//test: ValidateURL("/github/advanced-go/http2","github/advanced-go/http2") -> [error: invalid URI, path only contains a domain: "/github/advanced-go/http2"]
 
 }
 
@@ -58,13 +58,13 @@ func ExampleValidateRequest() {
 
 }
 
-func ExampleValidateURL_Authority() {
+func ExampleValidateURL_Domain() {
 	auth := "github/advanced-go/stdlib"
-	req, _ := http.NewRequest(http.MethodGet, AuthorityRootPath, nil)
+	req, _ := http.NewRequest(http.MethodGet, DomainRootPath, nil)
 	p, status := ValidateURL(req.URL, auth)
-	fmt.Printf("test: ValidateURL(\"%v\",\"%v\") -> [%v] [ver:%v] [path:%v]\n", AuthorityPath, auth, status, p.Version, p.Path)
+	fmt.Printf("test: ValidateURL(\"%v\",\"%v\") -> [%v] [ver:%v] [path:%v]\n", DomainPath, auth, status, p.Version, p.Path)
 
 	//Output:
-	//test: ValidateURL("authority","github/advanced-go/stdlib") -> [<nil>] [ver:] [path:authority]
+	//test: ValidateURL("domain","github/advanced-go/stdlib") -> [<nil>] [ver:] [path:domain]
 
 }

@@ -45,9 +45,9 @@ func BuildURL(host, version, path string, query any) string {
 	return newUrl.String()
 }
 
-// BuildURLWithAuthority - build an url with the components provided, escaping the query
+// BuildURLWithDomain - build an url with the components provided, escaping the query
 // TODO : escaping on path ?? url.PathEscape
-func BuildURLWithAuthority2(host, authority, version, path string, query any) string {
+func BuildURLWithDomain2(host, domain, version, path string, query any) string {
 	newUrl := strings.Builder{}
 	if host != "" {
 		scheme := HttpsScheme
@@ -60,9 +60,9 @@ func BuildURLWithAuthority2(host, authority, version, path string, query any) st
 		newUrl.WriteString("://")
 		newUrl.WriteString(host)
 	}
-	if authority != "" {
+	if domain != "" {
 		newUrl.WriteString("/")
-		newUrl.WriteString(authority)
+		newUrl.WriteString(domain)
 	}
 	isVersion := false
 	newUrl.WriteString(":")
@@ -168,7 +168,7 @@ func TransformURL(host string, uri *url.URL) *url.URL {
 		newUri += "?" + uri.RawQuery
 	}
 	/*
-		if authority == "" {
+		if domain == "" {
 			if len(uri.Path) > 0 {
 				newUri += uri.Path
 			}
@@ -177,7 +177,7 @@ func TransformURL(host string, uri *url.URL) *url.URL {
 			}
 		} else {
 			//parsed := Uproot(uri.Path)
-			//newUri += "/" + authority
+			//newUri += "/" + domain
 			//if len(parsed.Path) > 0 {
 			//	newUri += ":" + parsed.Path //uri.Path[1:]
 			//}

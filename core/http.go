@@ -5,7 +5,7 @@ import "net/http"
 const (
 	XRequestId        = "X-Request-Id"
 	XRelatesTo        = "X-Relates-To"
-	XAuthority        = "X-Authority"
+	XDomain           = "X-Domain"
 	XVersion          = "X-Version"
 	XURLPath          = "x-url-path"
 	XTest             = "X-Test"

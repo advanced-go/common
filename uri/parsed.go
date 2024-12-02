@@ -7,14 +7,14 @@ import (
 )
 
 type Parsed struct {
-	Valid     bool
-	Host      string
-	Authority string
-	Version   string
-	Resource  string
-	Path      string
-	Query     string
-	Err       error
+	Valid    bool
+	Host     string
+	Domain   string
+	Version  string
+	Resource string
+	Path     string
+	Query    string
+	Err      error
 }
 
 func (p *Parsed) PathQuery() *url.URL {
@@ -42,7 +42,7 @@ func ParseURL(hostOverride string, u *url.URL) (uri string, parsed *Parsed) {
 	if len(host) == 0 {
 		host = u.Host
 	}
-	// Set path, checking for an authority
+	// Set path, checking for a domain
 	urlPath, _ := url.PathUnescape(u.Path)
 	path := urlPath
 	i := strings.Index(path, ":")
@@ -61,13 +61,13 @@ func ParseURL(hostOverride string, u *url.URL) (uri string, parsed *Parsed) {
 		uri = scheme + "://" + host + urlPath + query
 	}
 	return uri, &Parsed{
-		Valid:     true,
-		Host:      host,
-		Authority: "",
-		Version:   "",
-		Resource:  "",
-		Path:      path,
-		Query:     query,
-		Err:       nil,
+		Valid:    true,
+		Host:     host,
+		Domain:   "",
+		Version:  "",
+		Resource: "",
+		Path:     path,
+		Query:    query,
+		Err:      nil,
 	}
 }

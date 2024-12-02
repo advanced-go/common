@@ -64,5 +64,5 @@ func createTo(uri any) (string, *core.Status) {
 	if !p.Valid {
 		return "", core.NewStatusError(http.StatusBadRequest, errors.New(fmt.Sprintf("error: Ping() uri is not a valid URN %v", path)))
 	}
-	return p.Authority, core.StatusOK()
+	return p.Domain, core.StatusOK()
 }

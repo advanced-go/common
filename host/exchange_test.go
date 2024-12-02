@@ -43,23 +43,23 @@ func testDo(r *http.Request) (*http.Response, *core.Status) {
 }
 
 /*
-	func ExampleRegisterAuthority() {
-		authority := []PathHandler{
+	func ExampleRegisterdomain() {
+		domain := []PathHandler{
 			{"test", nil},
 		}
-		err := RegisterAuthority(authority)
-		fmt.Printf("test: RegisterAuthority() -> [%v]\n", err)
+		err := Registerdomain(domain)
+		fmt.Printf("test: Registerdomain() -> [%v]\n", err)
 
-		authority = []PathHandler{
+		domain = []PathHandler{
 			{"test", testAuthExchangeOK},
 			{"test2", testAuthExchangeOK},
 		}
-		err = RegisterAuthority(authority)
-		fmt.Printf("test: RegisterAuthority() -> [%v]\n", err)
+		err = Registerdomain(domain)
+		fmt.Printf("test: Registerdomain() -> [%v]\n", err)
 
 		//Output:
-		//test: RegisterAuthority() -> [error: handler for path [test] is nil]
-		//test: RegisterAuthority() -> [<nil>]
+		//test: Registerdomain() -> [error: handler for path [test] is nil]
+		//test: Registerdomain() -> [<nil>]
 
 }
 */
@@ -83,11 +83,11 @@ func ExampleRegisterExchange() {
 	fmt.Printf("test: RegisterExchange(\"%v\",appHttpExchange) -> [err:%v]\n", a, err)
 
 	//Output:
-	//test: RegisterExchange(_,nil) -> [err:invalid argument: authority is empty]
-	//test: RegisterExchange("github/advanced-go/stdlib",nil) -> [err:invalid argument: HTTP Exchange is nil for authority : [github/advanced-go/stdlib]]
+	//test: RegisterExchange(_,nil) -> [err:invalid argument: domain is empty]
+	//test: RegisterExchange("github/advanced-go/stdlib",nil) -> [err:invalid argument: HTTP Exchange is nil for domain : [github/advanced-go/stdlib]]
 	//test: RegisterExchange("github/advanced-go/stdlib",appHttpExchange) -> [err:<nil>]
 	//test: Lookup("github/advanced-go/stdlib") -> [ok:true]
-	//test: RegisterExchange("github/advanced-go/stdlib",appHttpExchange) -> [err:invalid argument: HTTP Exchange already exists for authority : [github/advanced-go/stdlib]]
+	//test: RegisterExchange("github/advanced-go/stdlib",appHttpExchange) -> [err:invalid argument: HTTP Exchange already exists for domain : [github/advanced-go/stdlib]]
 
 }
 

@@ -9,9 +9,9 @@ var (
 	exchangeProxy = core.NewExchangeProxy()
 )
 
-// RegisterExchange - add an authority and Http Exchange handler to the proxy
-func RegisterExchange(authority string, handler core.HttpExchange) error {
-	return exchangeProxy.Register(authority, handler)
+// RegisterExchange - add a domain and Http Exchange handler to the proxy
+func RegisterExchange(domain string, handler core.HttpExchange) error {
+	return exchangeProxy.Register(domain, handler)
 }
 
 // Exchange - process an HTTP call utilizing an Exchange
